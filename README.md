@@ -72,3 +72,16 @@ ImarisParser/
 └── example/
     └── sample_output.csv     # An example of an output csv
 ```
+
+## Citation
+``` bibtex
+@misc{ImarisParser2025,
+  author       = {Shehan Perera, Juraj Kabat},
+  title        = {ImarisParser: A Python tool for parsing Imaris .ims microscopy files},
+  year         = {2025},
+  publisher    = {GitHub},
+  journal      = {GitHub repository},
+  howpublished = {\url{https://github.com/srperera/ImarisParser}},
+  note         = {Version 2.0},
+}
+```
