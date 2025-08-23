@@ -1,0 +1,28 @@
+# List of directories that contains .ims files
+data_dir: [
+  "/home/shehan/Documents/projects/nih/nih_parsers/data/surface/"
+]
+
+# File Path: Optional If You want to Run a single .ims File
+save_dir: ['../results/surface']
+
+# Surface of Interest NOT ZERO INDEX ie: START WITH 1
+# If ALL surfaces are needed use valid_surfaces = -1
+#valid_surfaces: [1,2,3,7,12]
+valid_surfaces: -1 
+
+# specify number of cpu cores
+cpu_cores: 8
+
+# extract surface objects
+extract_objects: True
+
+# extract surface tracks
+extract_tracks: True
+
+# extract surface track objects
+extract_surface_track_objects: True
+
+# extract specific time step
+extract_specific_timestep: True
+time_index: 0

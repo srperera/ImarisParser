@@ -1,0 +1,21 @@
+# List of directories that contains .ims files
+data_dir: [
+  "/home/shehan/Documents/projects/nih/projects/ImarisParser/data/spots"
+]
+
+# File Path: Optional If You want to Run a single .ims File
+save_dir: ["../results/spots/"]
+
+# Surface of Interest NOT ZERO INDEX ie: START WITH 1
+# If ALL surfaces are needed use valid_surfaces = -1
+#valid_surfaces: [1,2,3,7,12]
+valid_spots: -1
+
+# specify number of cpu cores
+cpu_cores: 8
+
+# extract track objects
+extract_track_objects: True
+
+# extract tracks
+extract_tracks: True

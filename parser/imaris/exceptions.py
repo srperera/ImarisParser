@@ -1,0 +1,64 @@
+###################################################################
+class NoTrackException(Exception):
+    """raised when no Tracks are Found
+
+    Args:
+        Exception (_type_): _description_
+    """
+
+    pass
+
+
+###################################################################
+class NoSurfaceException(Exception):
+    """raised when no Surfaces are Found
+
+    Args:
+        Exception (_type_): _description_
+    """
+
+    pass
+
+
+###################################################################
+class NoFirstObjectException(Exception):
+    """raised when no NoFirstObject are Found
+
+    Args:
+        Exception (_type_): _description_
+    """
+
+    pass
+
+
+###################################################################
+class NoSurfaceObjectsException(Exception):
+    """raised when no objects in a given surface are Found
+
+    Args:
+        Exception (_type_): _description_
+    """
+
+    pass
+
+
+###################################################################
+class NoFilamentsException(Exception):
+    """raised when no filaments in a given ims file are Found
+
+    Args:
+        Exception (_type_): _description_
+    """
+
+    pass
+
+
+###################################################################
+class NoPointsException(Exception):
+    """raised when no points in a given ims file are Found
+
+    Args:
+        Exception (_type_): _description_
+    """
+
+    pass

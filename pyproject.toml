@@ -1,0 +1,15 @@
+[project]
+name = "imarisparser"
+version = "2.0.0"
+description = "Fast and efficient data parsing tool for Imaris Files. Extracts statistical information from Imaris (.ims) files and formats it in a manner that helps with downstream analysis software like FlowJo"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "h5py>=3.14.0",
+    "ipykernel>=6.30.1",
+    "ipywidgets>=8.1.7",
+    "numpy>=2.3.2",
+    "pandas>=2.3.2",
+    "pyyaml>=6.0.2",
+    "tqdm>=4.67.1",
+]
