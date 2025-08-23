@@ -11,6 +11,6 @@ wheels/
 
 # Parser Related Files/Dev Files
 /data
-*.csv
+#*.csv
 **/.vscode
 **/results/

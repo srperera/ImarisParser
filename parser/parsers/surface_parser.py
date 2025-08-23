@@ -192,7 +192,7 @@ class SurfaceParserDistributed(Parser):
         else:
             self._save_csv(dataframe, save_dir, surface_id=self.surface_id)
 
-        #print(f"[info] -- finished: {self.ims_filename}")
+        # print(f"[info] -- finished: {self.ims_filename}")
 
     def inspect(self, surface_id: int) -> Dict:
         """

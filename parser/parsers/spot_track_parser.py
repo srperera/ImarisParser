@@ -216,7 +216,7 @@ class SpotTrackParserDistributed(Parser):
         else:
             self._save_csv(dataframe, save_dir, spot_id=self.spot_id)
 
-        #print(f"[info] -- finished: {self.ims_filename}")
+        # print(f"[info] -- finished: {self.ims_filename}")
 
     def inspect(self, spot_id: int) -> Dict:
         """
