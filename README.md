@@ -88,3 +88,47 @@ ImarisParser/
   note         = {Version 2.0},
 }
 ```
+
+## Used In Following Published Journals/Conference Papers
+```bibtex
+Note: Version 1 was used in this paper. Version 2 (this repo) is an improved version of version 1.
+
+@ARTICLE{Pessenda2025-jb,
+  title     = "Kupffer cell and recruited macrophage heterogeneity orchestrate
+               granuloma maturation and hepatic immunity in visceral
+               leishmaniasis",
+  author    = "Pessenda, Gabriela and Ferreira, Tiago R and Paun, Andrea and
+               Kabat, Juraj and Amaral, Eduardo P and Kamenyeva, Olena and
+               Gazzinelli-Guimaraes, Pedro Henrique and Perera, Shehan R and
+               Ganesan, Sundar and Lee, Sang Hun and Sacks, David L",
+  abstract  = "In murine models of visceral leishmaniasis (VL), the
+               parasitization of resident Kupffer cells (resKCs) drives early
+               Leishmania infantum growth in the liver, leading to granuloma
+               formation and subsequent parasite control. Using the chronic VL
+               model, we demonstrate that polyclonal resKCs redistributed to
+               form granulomas outside the sinusoids, creating an open
+               sinusoidal niche that was gradually repopulated by
+               monocyte-derived KCs (moKCs) acquiring a tissue specific,
+               homeostatic profile. Early-stage granulomas predominantly
+               consisted of CLEC4F+KCs. In contrast, late-stage granulomas led
+               to remodeling of the sinusoidal network and contained
+               monocyte-derived macrophages (momacs) along with KCs that
+               downregulated CLEC4F, with both populations expressing iNOS and
+               pro-inflammatory chemokines. During late-stage infection,
+               parasites were largely confined to CLEC4F-KCs. Reduced monocyte
+               recruitment and increased resKCs proliferation in infected
+               Ccr2-/- mice impaired parasite control. These findings show that
+               the ontogenic heterogeneity of granuloma macrophages is closely
+               linked to granuloma maturation and the development of hepatic
+               immunity in VL.",
+  journal   = "Nat. Commun.",
+  publisher = "Springer Science and Business Media LLC",
+  volume    =  16,
+  number    =  1,
+  pages     = "3125",
+  month     =  apr,
+  year      =  2025,
+  copyright = "https://creativecommons.org/licenses/by/4.0",
+  language  = "en"
+}
+```
