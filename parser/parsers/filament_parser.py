@@ -10,7 +10,6 @@ from imaris.imaris import ImarisDataObject
 
 ################################################################################################
 ################################################################################################
-# @ray.remote
 class FilamentParserDistributed(Parser):
     """
     Extracts Filament Level Information From Imaris File.

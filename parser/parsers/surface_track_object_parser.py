@@ -11,7 +11,6 @@ from imaris.imaris import ImarisDataObject
 
 ###########################################################################################
 ###########################################################################################
-# @ray.remote
 class SurfaceTrackObjectParserDistributed(Parser):
     """
     Extracts Surface Level Information From Imaris File

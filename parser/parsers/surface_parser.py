@@ -10,7 +10,6 @@ from imaris.imaris import ImarisDataObject
 
 ###########################################################################################
 ###########################################################################################
-#@ray.remote
 class SurfaceParserDistributed(Parser):
     """
     Extracts Surface Level Information From Imaris File.

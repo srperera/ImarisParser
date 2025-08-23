@@ -11,7 +11,6 @@ from imaris.imaris import ImarisDataObject
 
 ###########################################################################################
 ###########################################################################################
-# @ray.remote
 class SpotTrackObjectParserDistributed(Parser):
     """
     Extracts all the individual cells or spots in a given Spot Track.

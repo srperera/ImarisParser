@@ -10,7 +10,6 @@ from imaris.imaris import ImarisDataObject
 
 ###########################################################################################
 ###########################################################################################
-# @ray.remote
 class SpotTrackParserDistributed(Parser):
     """
     Extracts Spot Track Level Information From Imaris File.
