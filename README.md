@@ -6,6 +6,9 @@
 
 **ImarisParser** is a Python-based tool designed to extract structured statistical data from Imaris `.ims` microscopy files. It enables seamless integration into downstream analysis workflows such as FlowJo or custom scientific pipelines.
 
+  * Version 1 can be found at: https://github.com/srperera/nih_parsers (no longer supported will be archived shortly.)
+  * Version 2 (this repo) is 2x to 5x faster than Version 1
+
 ---
 
 ## ✨ Features
