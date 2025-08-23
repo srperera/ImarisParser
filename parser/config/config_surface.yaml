@@ -12,7 +12,7 @@ save_dir: ['../results/surface']
 valid_surfaces: -1 
 
 # specify number of cpu cores
-cpu_cores: 8
+cpu_cores: 4
 
 # extract surface objects
 extract_objects: True

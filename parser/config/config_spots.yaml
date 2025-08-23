@@ -12,7 +12,7 @@ save_dir: ["../results/spots/"]
 valid_spots: -1
 
 # specify number of cpu cores
-cpu_cores: 8
+cpu_cores: 4
 
 # extract track objects
 extract_track_objects: True
