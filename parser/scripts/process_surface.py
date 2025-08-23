@@ -5,10 +5,10 @@ from tqdm import tqdm
 from typing import List, Tuple
 from imaris.exceptions import NoSurfaceException
 from concurrent.futures import ProcessPoolExecutor, as_completed
-from parsers_v2.surface_parser import SurfaceParserDistributed
-from parsers_v2.surface_track_parser import SurfaceTrackParserDistributed
-from parsers_v2.surface_track_object_parser import SurfaceTrackObjectParserDistributed
-from parsers_v2.surface_time_step_parser import TimeStepSurfaceParserDistributed
+from parsers.surface_parser import SurfaceParserDistributed
+from parsers.surface_track_parser import SurfaceTrackParserDistributed
+from parsers.surface_track_object_parser import SurfaceTrackObjectParserDistributed
+from parsers.surface_time_step_parser import TimeStepSurfaceParserDistributed
 from utils.utils import get_valid_surfaces, get_valid_surfaces_with_tracks
 
 

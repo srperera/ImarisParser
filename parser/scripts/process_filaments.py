@@ -5,7 +5,7 @@ from tqdm import tqdm
 from typing import List, Tuple
 from utils.utils import get_valid_filaments
 from imaris.exceptions import NoFilamentsException
-from parsers_v2.filament_parser import FilamentParserDistributed
+from parsers.filament_parser import FilamentParserDistributed
 from concurrent.futures import ProcessPoolExecutor, as_completed
 
 

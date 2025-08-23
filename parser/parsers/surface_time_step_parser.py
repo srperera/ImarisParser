@@ -5,7 +5,6 @@ import pandas as pd
 from copy import deepcopy
 from functools import partial
 from typing import Dict, List
-
 from .parser_base import Parser
 from imaris.imaris import ImarisDataObject
 

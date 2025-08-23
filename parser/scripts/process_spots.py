@@ -5,9 +5,9 @@ from tqdm import tqdm
 from typing import List, Tuple
 from imaris.exceptions import NoPointsException
 from concurrent.futures import ProcessPoolExecutor, as_completed
-from parsers_v2.spot_track_parser import SpotTrackParserDistributed
-from parsers_v2.spot_track_object_parser import SpotTrackObjectParserDistributed
+from parsers.spot_track_parser import SpotTrackParserDistributed
 from utils.utils import get_valid_spot_objects, get_valid_spot_tracks
+from parsers.spot_track_object_parser import SpotTrackObjectParserDistributed
 
 
 ###############################################################################################
