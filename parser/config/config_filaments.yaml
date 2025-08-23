@@ -16,3 +16,7 @@ cpu_cores: 4
 
 # extract filament objects
 extract_objects: True
+
+# filter stats
+filter_stats: False
+filter_list: [] # names of stats names to keep in order you want it on the csv. 

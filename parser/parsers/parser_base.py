@@ -322,7 +322,7 @@ class Parser(ABC):
 
         return dataframe
 
-    def _drop_unwanted_stats(self):
+    def _drop_unwanted_stats(self, dataframe, subset):
         """
         Drops stats not contained in the user defined list of stats names
         from the final csv before saving to disk.
@@ -330,7 +330,7 @@ class Parser(ABC):
         Raises:
             NotImplementedError: _description_
         """
-        raise NotImplementedError
+        return dataframe.filter(items=subset)
 
     @abstractmethod
     def _save_csv(self):

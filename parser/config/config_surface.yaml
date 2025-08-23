@@ -26,3 +26,7 @@ extract_surface_track_objects: True
 # extract specific time step
 extract_specific_timestep: True
 time_index: 0
+
+# filter stats
+filter_stats: False
+filter_list: [] # names of stats names to keep in order you want it on the csv. 

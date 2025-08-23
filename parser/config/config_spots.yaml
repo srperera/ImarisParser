@@ -19,3 +19,7 @@ extract_track_objects: True
 
 # extract tracks
 extract_tracks: True
+
+# filter stats
+filter_stats: False
+filter_list: [] # names of stats names to keep in order you want it on the csv. 
