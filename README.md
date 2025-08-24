@@ -7,7 +7,7 @@
 **ImarisParser** is a Python-based tool designed to extract structured statistical data from Imaris `.ims` microscopy files. It enables seamless integration into downstream analysis workflows such as FlowJo or custom scientific pipelines.
 
   * Version 1 can be found at: https://github.com/srperera/nih_parsers (no longer supported will be archived shortly.)
-  * Version 2 (this repo) is 2x to 5x faster than Version 1
+  * Version 2 (this repo) is significantly faster than version 1 across all supported formats. 
 
 ---
 
@@ -24,6 +24,9 @@
   
 - **Notebook-Driven Workflow**  
   Includes ready-to-use Jupyter notebooks for modular parsing and visualization.
+
+- **Minimal Dependencies**
+  Written in pure Python +few external libraries.
 
 ---
 
@@ -103,29 +106,23 @@ Note: Version 1 was used in this paper. Version 2 (this repo) is an improved ver
                Ganesan, Sundar and Lee, Sang Hun and Sacks, David L",
   journal   = "Nature Communications.",
   publisher = "Springer Science and Business Media LLC",
-  volume    =  16,
-  number    =  1,
-  pages     = "3125",
   month     =  apr,
   year      =  2025,
-  copyright = "https://creativecommons.org/licenses/by/4.0",
-  language  = "en"
 }
+
+----------------------------------------------------------------
 
 @article{10.4049/jimmunol.212.supp.0341.4528,
     author = {Pessenda, Gabriela and Ferreira, Tiago and Paun, Andrea and Amaral, Eduardo and Kabat, Juraj and Kamenyeva, Olena and Ganesan, Sundar and Lee, Sang and Perera, Shehan and Sacks, David},
     title = {Kupffer cell replacement by monocyte-derived cells and granuloma heterogeneity improve visceral leishmaniasis control},
     journal = {The Journal of Immunology},
-    volume = {212},
-    number = {1_Supplement},
-    pages = {0341_4528-0341_4528},
     year = {2024},
     month = {05},
-    issn = {0022-1767},
     doi = {10.4049/jimmunol.212.supp.0341.4528},
     url = {https://doi.org/10.4049/jimmunol.212.supp.0341.4528},
-    eprint = {https://academic.oup.com/jimmunol/article-pdf/212/1\_Supplement/0341\_4528/61726914/0341\_4528.pdf},
 }
+
+----------------------------------------------------------------
 
 @ARTICLE{Foreman2022-nk,
   title     = "{CD4} {T} cells are rapidly depleted from tuberculosis
@@ -140,15 +137,8 @@ Note: Version 1 was used in this paper. Version 2 (this repo) is an improved ver
                Daniel L",
   journal   = "Cell Reports",
   publisher = "Elsevier BV",
-  volume    =  39,
-  number    =  9,
-  pages     = "110896",
   month     =  may,
   year      =  2022,
-  keywords  = "CD4 T cells; CP: Immunology; CP: Microbiology; SIV; granulomas;
-               live imaging; tuberculosis",
-  copyright = "http://creativecommons.org/licenses/by-nc-nd/4.0/",
-  language  = "en"
 }
 
 
