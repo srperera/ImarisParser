@@ -35,7 +35,7 @@
 ### ✅ Prerequisites
 - Python **3.10+**
 - [Jupyter Notebook](https://jupyter.org/)
-- Dependencies (managed via `pyproject.toml` or `requirements.txt`)
+- Dependencies (auto managed via provided `pyproject.toml` and `uv.lock` files.)
 
 ### 📥 Installation
 ```bash
@@ -143,6 +143,4 @@ Note: Version 1 was used in this paper. Version 2 (this repo) is an improved ver
   month     =  may,
   year      =  2022,
 }
-
-
 ```
