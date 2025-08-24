@@ -113,8 +113,11 @@ Note: Version 1 was used in this paper. Version 2 (this repo) is an improved ver
 ----------------------------------------------------------------
 
 @ARTICLE{10.4049/jimmunol.212.supp.0341.4528,
-    author = {Pessenda, Gabriela and Ferreira, Tiago and Paun, Andrea and Amaral, Eduardo and Kabat, Juraj and Kamenyeva, Olena and Ganesan, Sundar and Lee, Sang and Perera, Shehan and Sacks, David},
-    title = {Kupffer cell replacement by monocyte-derived cells and granuloma heterogeneity improve visceral leishmaniasis control},
+    title = {Kupffer cell replacement by monocyte-derived cells and granuloma heterogeneity 
+    improve visceral leishmaniasis control},
+    author = {Pessenda, Gabriela and Ferreira, Tiago and Paun, Andrea and Amaral, 
+    Eduardo and Kabat, Juraj and Kamenyeva, Olena and Ganesan, Sundar and 
+    Lee, Sang and Perera, Shehan and Sacks, David},
     journal = {The Journal of Immunology},
     year = {2024},
     month = {05},
