@@ -101,27 +101,7 @@ Note: Version 1 was used in this paper. Version 2 (this repo) is an improved ver
                Kabat, Juraj and Amaral, Eduardo P and Kamenyeva, Olena and
                Gazzinelli-Guimaraes, Pedro Henrique and Perera, Shehan R and
                Ganesan, Sundar and Lee, Sang Hun and Sacks, David L",
-  abstract  = "In murine models of visceral leishmaniasis (VL), the
-               parasitization of resident Kupffer cells (resKCs) drives early
-               Leishmania infantum growth in the liver, leading to granuloma
-               formation and subsequent parasite control. Using the chronic VL
-               model, we demonstrate that polyclonal resKCs redistributed to
-               form granulomas outside the sinusoids, creating an open
-               sinusoidal niche that was gradually repopulated by
-               monocyte-derived KCs (moKCs) acquiring a tissue specific,
-               homeostatic profile. Early-stage granulomas predominantly
-               consisted of CLEC4F+KCs. In contrast, late-stage granulomas led
-               to remodeling of the sinusoidal network and contained
-               monocyte-derived macrophages (momacs) along with KCs that
-               downregulated CLEC4F, with both populations expressing iNOS and
-               pro-inflammatory chemokines. During late-stage infection,
-               parasites were largely confined to CLEC4F-KCs. Reduced monocyte
-               recruitment and increased resKCs proliferation in infected
-               Ccr2-/- mice impaired parasite control. These findings show that
-               the ontogenic heterogeneity of granuloma macrophages is closely
-               linked to granuloma maturation and the development of hepatic
-               immunity in VL.",
-  journal   = "Nat. Commun.",
+  journal   = "Nature Communications.",
   publisher = "Springer Science and Business Media LLC",
   volume    =  16,
   number    =  1,
@@ -131,4 +111,45 @@ Note: Version 1 was used in this paper. Version 2 (this repo) is an improved ver
   copyright = "https://creativecommons.org/licenses/by/4.0",
   language  = "en"
 }
+
+@article{10.4049/jimmunol.212.supp.0341.4528,
+    author = {Pessenda, Gabriela and Ferreira, Tiago and Paun, Andrea and Amaral, Eduardo and Kabat, Juraj and Kamenyeva, Olena and Ganesan, Sundar and Lee, Sang and Perera, Shehan and Sacks, David},
+    title = {Kupffer cell replacement by monocyte-derived cells and granuloma heterogeneity improve visceral leishmaniasis control},
+    journal = {The Journal of Immunology},
+    volume = {212},
+    number = {1_Supplement},
+    pages = {0341_4528-0341_4528},
+    year = {2024},
+    month = {05},
+    issn = {0022-1767},
+    doi = {10.4049/jimmunol.212.supp.0341.4528},
+    url = {https://doi.org/10.4049/jimmunol.212.supp.0341.4528},
+    eprint = {https://academic.oup.com/jimmunol/article-pdf/212/1\_Supplement/0341\_4528/61726914/0341\_4528.pdf},
+}
+
+@ARTICLE{Foreman2022-nk,
+  title     = "{CD4} {T} cells are rapidly depleted from tuberculosis
+               granulomas following acute {SIV} co-infection",
+  author    = "Foreman, Taylor W and Nelson, Christine E and Kauffman, Keith D
+               and Lora, Nickiana E and Vinhaes, Caian L and Dorosky, Danielle
+               E and Sakai, Shunsuke and Gomez, Felipe and Fleegle, Joel D and
+               Parham, Melanie and Perera, Shehan R and Lindestam Arlehamn,
+               Cecilia S and Sette, Alessandro and {Tuberculosis Imaging
+               Program} and Brenchley, Jason M and Queiroz, Artur T L and
+               Andrade, Bruno B and Kabat, Juraj and Via, Laura E and Barber,
+               Daniel L",
+  journal   = "Cell Reports",
+  publisher = "Elsevier BV",
+  volume    =  39,
+  number    =  9,
+  pages     = "110896",
+  month     =  may,
+  year      =  2022,
+  keywords  = "CD4 T cells; CP: Immunology; CP: Microbiology; SIV; granulomas;
+               live imaging; tuberculosis",
+  copyright = "http://creativecommons.org/licenses/by-nc-nd/4.0/",
+  language  = "en"
+}
+
+
 ```
