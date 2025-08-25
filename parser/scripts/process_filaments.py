@@ -4,7 +4,7 @@ import numpy as np
 from tqdm import tqdm
 from typing import List, Tuple
 from utils.utils import get_valid_filaments
-from imaris.exceptions import NoFilamentsException
+from imaris.exceptions import NoFilamentsException, NoDataException
 from parsers.filament_parser import FilamentParserDistributed
 from concurrent.futures import ProcessPoolExecutor, as_completed
 
@@ -97,6 +97,14 @@ def run_filament_parser_parallel(
             # Use Appropriate Exception.
             except NoFilamentsException:
                 print(f"[info] -- File {filename} contains no spots. Skipping.")
+                continue
+            except NoDataException:
+                print(f"[info] -- File {filename} contains no data. Skipping.")
+                continue
+            except Exception as e:
+                print(
+                    f"[error] -- Filename {file_path} generated an unhandled exception: {e}. Skipping."
+                )
                 continue
 
     # 2. Execute tasks in parallel

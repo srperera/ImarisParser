@@ -3,7 +3,7 @@ import glob
 import numpy as np
 from tqdm import tqdm
 from typing import List, Tuple
-from imaris.exceptions import NoSurfaceException
+from imaris.exceptions import NoSurfaceException, NoDataException
 from concurrent.futures import ProcessPoolExecutor, as_completed
 from parsers.surface_parser import SurfaceParserDistributed
 from parsers.surface_track_parser import SurfaceTrackParserDistributed
@@ -97,6 +97,14 @@ def run_surface_parser_parallel(
             # Use Appropriate Exception.
             except NoSurfaceException:
                 print(f"[info] -- File {filename} contains no surfaces. Skipping.")
+                continue
+            except NoDataException:
+                print(f"[info] -- File {filename} contains no data. Skipping.")
+                continue
+            except Exception as e:
+                print(
+                    f"[error] -- Filename {file_path} generated an unhandled exception: {e}. Skipping."
+                )
                 continue
 
     # 2. Execute tasks in parallel
@@ -236,6 +244,14 @@ def run_surface_track_parser_parallel(
             except NoSurfaceException:
                 print(f"[info] -- File {filename} contains no surfaces. Skipping.")
                 continue
+            except NoDataException:
+                print(f"[info] -- File {filename} contains no data. Skipping.")
+                continue
+            except Exception as e:
+                print(
+                    f"[error] -- Filename {file_path} generated an unhandled exception: {e}. Skipping."
+                )
+                continue
 
     # 2. Execute tasks in parallel
     if not tasks:
@@ -373,6 +389,14 @@ def run_surface_track_object_parser_parallel(
             # Use Appropriate Exception.
             except NoSurfaceException:
                 print(f"[info] -- File {filename} contains no surfaces. Skipping.")
+                continue
+            except NoDataException:
+                print(f"[info] -- File {filename} contains no data. Skipping.")
+                continue
+            except Exception as e:
+                print(
+                    f"[error] -- Filename {file_path} generated an unhandled exception: {e}. Skipping."
+                )
                 continue
 
     # 2. Execute tasks in parallel
@@ -512,6 +536,14 @@ def run_surface_timestep_parser_parallel(
             # Use Appropriate Exception.
             except NoSurfaceException:
                 print(f"[info] -- File {filename} contains no surfaces. Skipping.")
+                continue
+            except NoDataException:
+                print(f"[info] -- File {filename} contains no data. Skipping.")
+                continue
+            except Exception as e:
+                print(
+                    f"[error] -- Filename {file_path} generated an unhandled exception: {e}. Skipping."
+                )
                 continue
 
     # 2. Execute tasks in parallel

@@ -51,11 +51,15 @@ class ImarisDataObject:
         supported_types = ["Surface", "Points", "Filaments"]
 
         # get all the items that match object_name
-        values = self.data.get("Scene8").get("Content").keys()
-        storage = []
-        for item in values:
-            if len(re.findall(object_name, item)):
-                storage.append(item)
+        try:
+            values = self.data.get("Scene8").get("Content").keys()
+            storage = []
+            for item in values:
+                if len(re.findall(object_name, item)):
+                    storage.append(item)
+        except AttributeError:
+            # file has no data in Scene8 - creates AttributeError.
+            raise NoDataException
 
         # catch any errors if the user requests a invalid item
         # OR return list with items.

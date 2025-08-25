@@ -3,7 +3,7 @@ import glob
 import numpy as np
 from tqdm import tqdm
 from typing import List, Tuple
-from imaris.exceptions import NoPointsException
+from imaris.exceptions import NoPointsException, NoDataException
 from concurrent.futures import ProcessPoolExecutor, as_completed
 from parsers.spot_track_parser import SpotTrackParserDistributed
 from utils.utils import get_valid_spot_objects, get_valid_spot_tracks
@@ -93,6 +93,14 @@ def run_spot_track_object_parser_parallel(
             # Use Appropriate Exception.
             except NoPointsException:
                 print(f"[info] -- File {filename} contains no spots. Skipping.")
+                continue
+            except NoDataException:
+                print(f"[info] -- File {filename} contains no data. Skipping.")
+                continue
+            except Exception as e:
+                print(
+                    f"[error] -- Filename {file_path} generated an unhandled exception: {e}. Skipping."
+                )
                 continue
 
     # 2. Execute tasks in parallel
@@ -224,6 +232,14 @@ def run_spot_track_parser_parallel(
             # Use Appropriate Exception.
             except NoPointsException:
                 print(f"[info] -- File {filename} contains no spots. Skipping.")
+                continue
+            except NoDataException:
+                print(f"[info] -- File {filename} contains no data. Skipping.")
+                continue
+            except Exception as e:
+                print(
+                    f"[error] -- Filename {file_path} generated an unhandled exception: {e}. Skipping."
+                )
                 continue
 
     # 2. Execute tasks in parallel
