@@ -117,8 +117,11 @@ def run_spot_track_object_parser_parallel(
         for task in tasks:
             # Instructions: Modify Here If Duplicating For New Use Case
             # Use The Appropriate Class
-            actor = SpotTrackObjectParserDistributed(*task)
-            actors.append(actor)
+            try:
+                actor = SpotTrackObjectParserDistributed(*task)
+                actors.append(actor)
+            except Exception as exc:
+                print(f"[error] -- Task {task} generated an exception: {exc}")
 
         # ensure we are not submitting too many jobs at a time
         # limits to at most 1 task per core.
@@ -256,8 +259,11 @@ def run_spot_track_parser_parallel(
         for task in tasks:
             # Instructions: Modify Here If Duplicating For New Use Case
             # Use The Appropriate Class
-            actor = SpotTrackParserDistributed(*task)
-            actors.append(actor)
+            try:
+                actor = SpotTrackParserDistributed(*task)
+                actors.append(actor)
+            except Exception as exc:
+                print(f"[error] -- Task {task} generated an exception: {exc}")
 
         # ensure we are not submitting too many jobs at a time
         # limits to at most 1 task per core.
