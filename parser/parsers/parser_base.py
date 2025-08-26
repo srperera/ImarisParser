@@ -99,7 +99,7 @@ class Parser(ABC):
 
         stats_names["Name"] = stats_names.apply(
             lambda row: (
-                f"{row['Name']} Channel_{int(row['Channel_Level'])}"
+                f"{row['Name']} Ch={int(row['Channel_Level'])}"
                 if pd.notna(row["Channel_Level"])
                 else row["Name"]
             ),
@@ -152,6 +152,48 @@ class Parser(ABC):
 
         return stats_names
 
+    def _update_spot_info_fast(
+        self,
+        stats_names: pd.DataFrame,
+        factor: pd.DataFrame,
+    ) -> pd.DataFrame:
+        """
+        Updates the channel information for the relavent rows
+        based on th ID_FactorList information in stats_names
+
+        Args:
+            stats_names (pd.DataFrame): _description_
+            factor (pd.DataFrame): _description_
+
+        Returns:
+            pd.DataFrame: _description_
+        """
+
+        # Build mapping from ID_List -> Level for Surfaces
+        surface_map = (
+            factor.loc[factor["Name"] == "Spots", ["ID_List", "Level"]]
+            .set_index("ID_List")["Level"]
+            .to_dict()
+        )
+
+        # Map surface levels to stats_names
+        stats_names["Spots_Level"] = stats_names["ID_FactorList"].map(surface_map)
+
+        # Update Name column: append surface level if exists
+        stats_names["Name"] = stats_names.apply(
+            lambda row: (
+                f"{row['Name']} Spots={row['Spots_Level']}"
+                if pd.notna(row["Spots_Level"])
+                else row["Name"]
+            ),
+            axis=1,
+        )
+
+        # Drop the helper column
+        stats_names = stats_names.drop(columns="Spots_Level")
+
+        return stats_names
+
     def _update_image_level_info_fast(
         self,
         stats_names: pd.DataFrame,
@@ -182,7 +224,7 @@ class Parser(ABC):
         # Update Name column: append surface level if exists
         stats_names["Name"] = stats_names.apply(
             lambda row: (
-                f"{row['Name']} {row['Image_Level']}"
+                f"{row['Name']} Img={int(row['Image_Level'].split(" ")[-1])}"
                 if pd.notna(row["Image_Level"])
                 else row["Name"]
             ),
