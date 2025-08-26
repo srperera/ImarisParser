@@ -232,23 +232,26 @@ class SpotTrackObjectParserDistributed(Parser):
         spot_name = self.spot_names[spot_id]
         storage["spot_name"] = spot_name
         stat_names = self.stats_names.get(spot_id)
-        storage["stat_names_raw"] = stat_names
+        storage["stat_names_raw"] = deepcopy(stat_names)
         stat_values = self.stats_values.get(spot_id)
-        storage["stat_values_raw"] = stat_values
+        storage["stat_values_raw"] = deepcopy(stat_values)
         object_id = self.object_ids.get(spot_id)
         storage["object_id"] = object_id
         factor = self.factors.get(spot_id)
         storage["factor"] = factor
 
         # update channel names
-        start = time.perf_counter()
-        stat_names = self._update_channel_info_fast(
-            stats_names=deepcopy(stat_names),
-            factor=factor,
-        )
-        print(stat_names.shape, object_id.shape)
-        print(f"time: {time.perf_counter() - start}")
-        storage["stat_names_channel_info_fast"] = deepcopy(stat_names)
+        # update spot name
+        stat_names = self._update_spot_info_fast(stat_names, factor)
+        storage["stat_names_channel_info"] = stat_names
+
+        # update channel
+        stat_names = self._update_channel_info_fast(stat_names, factor)
+        storage["stat_names_channel_info"] = stat_names
+
+        # update img info
+        stat_names = self._update_image_level_info_fast(stat_names, factor)
+        storage["stat_names_img_info"] = stat_names
 
         # filter stats values by object ids (ie: ignore info related to trackids)
         stat_values = self._filter_stats(
@@ -269,9 +272,9 @@ class SpotTrackObjectParserDistributed(Parser):
         storage["available_stats_names"] = available_stats_names
 
         # organize stats value
-        start = time.perf_counter()
+        # start = time.perf_counter()
         organized_stats = self._organize_stats_fast(stat_values)
-        print(f"time organize stats: {time.perf_counter() - start}")
+        # print(f"time organize stats: {time.perf_counter() - start}")
         storage["organized_stats_fast"] = organized_stats
 
         # generate csv
@@ -280,9 +283,9 @@ class SpotTrackObjectParserDistributed(Parser):
 
         # add track id information for each object
         if self.track_ids[spot_id] is not None:
-            start = time.perf_counter()
+            # start = time.perf_counter()
             stats_df = self._update_track_id_info(spot_id, stats_df)
-            print(f"time update track info: {time.perf_counter() - start}")
+            # print(f"time update track info: {time.perf_counter() - start}")
             storage["final_df"] = stats_df
         else:
             print(

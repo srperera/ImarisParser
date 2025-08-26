@@ -254,19 +254,25 @@ class SpotTrackParserDistributed(Parser):
         spot_name = self.spot_names[spot_id]
         storage["spot_name"] = spot_name
         stat_names = self.stats_names.get(spot_id)
-        storage["stat_names_raw"] = stat_names
+        storage["stat_names_raw"] = deepcopy(stat_names)
         stat_values = self.stats_values.get(spot_id)
-        storage["stat_values_raw"] = stat_values
+        storage["stat_values_raw"] = deepcopy(stat_values)
         track_id = self.track_ids.get(spot_id)
         storage["track_id"] = track_id
         factor = self.factors.get(spot_id)
         storage["factor"] = factor
 
-        # update channel
-        stat_names = self._update_channel_info_fast(
-            stats_names=stat_names, factor=factor
-        )
+        # update spot name
+        stat_names = self._update_spot_info_fast(stat_names, factor)
         storage["stat_names_channel_info"] = stat_names
+
+        # update channel
+        stat_names = self._update_channel_info_fast(stat_names, factor)
+        storage["stat_names_channel_info"] = stat_names
+
+        # update img info
+        stat_names = self._update_image_level_info_fast(stat_names, factor)
+        storage["stat_names_img_info"] = stat_names
 
         # filter stats values by object ids (ie: ignore info related to trackids)
         stat_values = self._filter_stats(
