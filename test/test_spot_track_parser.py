@@ -4,6 +4,7 @@ sys.path.append("../parser")
 import os
 import csv
 import glob
+import time
 import pandas as pd
 from typing import Tuple
 from termcolor import colored
@@ -41,6 +42,8 @@ def get_original_stat_name(column_names, stats_names):
 ################################################################################################
 if __name__ == "__main__":
 
+    start_test = time.perf_counter()
+
     # test ims file path
     test_ims_file = "/home/shehan/Documents/projects/nih/projects/ImarisParser/data/imaris_parser_test_files/Spots/KO Sec1 Roi1 3x3 80min.ims"
 
@@ -49,7 +52,9 @@ if __name__ == "__main__":
     parser = SpotTrackParserDistributed(test_ims_file)
 
     print("[info] Calculating Statistics")
+    start_parser = time.perf_counter()
     out = parser.inspect(1)
+    end_parser = time.perf_counter()
     parser_df = out["final_df"]
     parser_stat_names = list(parser_df.columns)
     stats_names = out["stat_names_raw"]
@@ -165,6 +170,8 @@ if __name__ == "__main__":
         except Exception as e:
             print(f"[error] - Test raised exception {e} at stat name {stat_name}")
 
+    end_test = time.perf_counter()
+
     if passed_count != total:
         print(
             colored(
@@ -178,6 +185,13 @@ if __name__ == "__main__":
             colored(
                 f"All statistics values match -- Test PASSED -- {passed_count}/{total} tests",
                 "green",
+                attrs=["bold"],
+            )
+        )
+        print(
+            colored(
+                f"parser run time: {end_parser - start_parser} sec || test run time: {end_test - start_test} sec",
+                "magenta",
                 attrs=["bold"],
             )
         )
