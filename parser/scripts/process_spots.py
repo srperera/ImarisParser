@@ -114,7 +114,7 @@ def run_spot_track_object_parser_parallel(
     with ProcessPoolExecutor(max_workers=cpu_cores) as executor:
         # Submit tasks and track their futures
         actors = []
-        for task in tasks:
+        for task in tqdm(tasks):
             # Instructions: Modify Here If Duplicating For New Use Case
             # Use The Appropriate Class
             try:
@@ -256,7 +256,7 @@ def run_spot_track_parser_parallel(
     with ProcessPoolExecutor(max_workers=cpu_cores) as executor:
         # Submit tasks and track their futures
         actors = []
-        for task in tasks:
+        for task in tqdm(tasks):
             # Instructions: Modify Here If Duplicating For New Use Case
             # Use The Appropriate Class
             try:
