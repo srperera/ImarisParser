@@ -92,7 +92,7 @@ if __name__ == "__main__":
     failed_stats = []
     for stat_name in parser_stat_names:
         try:
-            if stat_name not in ["Track_ID", "Time", "Time Index", "Object_ID"]:
+            if stat_name not in ["Track_ID", "Time", "Object_ID"]:
 
                 # get the stats df that we are using for validation
                 gt_stats_df = test_stats_dict[stat_name]
@@ -168,7 +168,9 @@ if __name__ == "__main__":
                 total += 1
 
         except Exception as e:
+            print(colored(f"[info] Test FAILED", "red", attrs=["bold"]))
             print(f"[error] - Test raised exception {e} at stat name {stat_name}")
+            raise e
 
     end_test = time.perf_counter()
 
