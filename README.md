@@ -1,6 +1,6 @@
 # ImarisParser
 
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/python-3.10+-brightgreen.svg)]()
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)]()
 
