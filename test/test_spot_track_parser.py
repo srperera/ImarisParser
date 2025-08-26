@@ -66,7 +66,7 @@ if __name__ == "__main__":
     track_stats_files = glob.glob(os.path.join(track_stats_dir, "*.csv"))
 
     # get all the stat from the test files into a dict
-    print("[info] Extracting Ground Truth Data ... ")
+    print(f"[info] Extracting Ground Truth Data ... ")
     test_stats_dict = {}
     for stat_test_path in track_stats_files:
         items = get_stats_df(stat_test_path)
