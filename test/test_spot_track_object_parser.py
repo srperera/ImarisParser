@@ -89,7 +89,7 @@ if __name__ == "__main__":
     ]
     passed_count = 0
     total = 0
-    omitted_stats = []
+    failed_stats = []
     for stat_name in parser_stat_names:
         try:
             if stat_name not in ["Track_ID", "Time", "Time Index", "Object_ID"]:
@@ -160,7 +160,7 @@ if __name__ == "__main__":
                 match = gt_stats_df.equals(pred_filtered_df)
                 if not match:
                     # print(f"Error: Stats for Name {stat_name} Does Not Match")
-                    pass
+                    failed_stats.append(stat_name)
                 else:
                     # print(f"Pass: Stats for {stat_name}")
                     passed_count += 1
@@ -175,22 +175,23 @@ if __name__ == "__main__":
     if passed_count != total:
         print(
             colored(
-                f"Test FAILED only passed {passed_count}/{total} tests",
+                f"[info] Test FAILED only passed {passed_count}/{total} tests",
                 "red",
                 attrs=["bold"],
             )
         )
+        print(f"Tests failed at the following stats names: {failed_stats}")
     else:
         print(
             colored(
-                f"All statistics values match -- Test PASSED -- {passed_count}/{total} tests",
+                f"[info] All statistics values match -- Test PASSED -- {passed_count}/{total} tests",
                 "green",
                 attrs=["bold"],
             )
         )
         print(
             colored(
-                f"parser run time: {end_parser - start_parser} sec || test run time: {end_test - start_test} sec",
+                f"[info] Parser run time: {end_parser - start_parser} sec || test run time: {end_test - start_test} sec",
                 "magenta",
                 attrs=["bold"],
             )
