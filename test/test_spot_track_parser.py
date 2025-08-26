@@ -6,8 +6,8 @@ import csv
 import glob
 import pandas as pd
 from typing import Tuple
+from termcolor import colored
 from parsers.spot_track_parser import SpotTrackParserDistributed
-from tqdm import tqdm
 
 
 ################################################################################################
@@ -61,9 +61,9 @@ if __name__ == "__main__":
     track_stats_files = glob.glob(os.path.join(track_stats_dir, "*.csv"))
 
     # get all the stat from the test files into a dict
-    print("[info] Extracting Ground Truth Data")
+    print("[info] Extracting Ground Truth Data ... ")
     test_stats_dict = {}
-    for stat_test_path in tqdm(track_stats_files):
+    for stat_test_path in track_stats_files:
         items = get_stats_df(stat_test_path)
         if items[0] in test_stats_dict.keys():
             raise ValueError
@@ -85,7 +85,7 @@ if __name__ == "__main__":
     passed_count = 0
     total = 0
     omitted_stats = []
-    for stat_name in tqdm(parser_stat_names):
+    for stat_name in parser_stat_names:
         try:
             if stat_name not in ["Track_ID", "Time", "Time Index", "Object_ID"]:
 
@@ -166,9 +166,21 @@ if __name__ == "__main__":
             print(f"[error] - Test raised exception {e} at stat name {stat_name}")
 
     if passed_count != total:
-        print(f"Test FAILED only passed {passed_count}/{total}")
+        print(
+            colored(
+                f"Test FAILED only passed {passed_count}/{total} tests",
+                "red",
+                attrs=["bold"],
+            )
+        )
     else:
-        print(f"All statistics values match -- Test PASSED {passed_count}/{total}")
+        print(
+            colored(
+                f"All statistics values match -- Test PASSED -- {passed_count}/{total} tests",
+                "green",
+                attrs=["bold"],
+            )
+        )
 
 ################################################################################################
 ################################################################################################
