@@ -1,11 +1,11 @@
 import gc
 import os
 import pandas as pd
+from typing import Dict
 from copy import deepcopy
-from functools import partial
-from typing import Dict, List
 from .parser_base import Parser
 from imaris.imaris import ImarisDataObject
+from imaris.exceptions import NoFilamentsException
 
 
 ################################################################################################
@@ -70,6 +70,8 @@ class FilamentParserDistributed(Parser):
             self.filament_names = self.ims.get_object_names("Filaments")
             if (filament_id >= 0) and (filament_id < len(self.filament_names)):
                 self.filament_names = [self.filament_names[filament_id]]
+                if self.filament_names[0] is None:
+                    raise NoFilamentsException
             elif filament_id >= len(self.filament_names):
                 raise ValueError(
                     f"filament_id {filament_id} exceeds number of filaments available"
@@ -84,24 +86,28 @@ class FilamentParserDistributed(Parser):
         self.stats_names = {
             filament_id: self.ims.get_stats_names(filament_name)
             for filament_id, filament_name in enumerate(self.filament_names)
+            if filament_name is not None
         }
 
         # get all the stats values for every filament {surf_id: stats_values_df}
         self.stats_values = {
             filament_id: self.ims.get_stats_values(filament_name)
             for filament_id, filament_name in enumerate(self.filament_names)
+            if filament_name is not None
         }
 
         # get all the factor table info for every filament {surf_id: factor_df}
         self.factors = {
             filament_id: self.ims.get_object_factor(filament_name)
             for filament_id, filament_name in enumerate(self.filament_names)
+            if filament_name is not None
         }
 
         # get all the factor table info for every filament {surf_id: factor_df}
         self.object_ids = {
             filament_id: self.ims.get_object_ids(filament_name)
             for filament_id, filament_name in enumerate(self.filament_names)
+            if filament_name is not None
         }
 
     def _save_csv(

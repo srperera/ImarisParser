@@ -18,6 +18,7 @@ class ImarisDataObject:
     def __init__(self, ims_file_path: str) -> None:
         self.data = self.load_ims(ims_file_path)
         self.filename = os.path.basename(ims_file_path)
+        self.ims_file_path = ims_file_path
 
     def load_ims(self, ims_file_path: str) -> h5py.File:
         """
@@ -50,25 +51,65 @@ class ImarisDataObject:
         # the types of objects parser currently supports
         supported_types = ["Surface", "Points", "Filaments"]
 
-        # get all the items that match object_name
+        # check if file has data
         try:
-            values = self.data.get("Scene8").get("Content").keys()
-            storage = []
-            for item in values:
-                if len(re.findall(object_name, item)):
-                    storage.append(item)
-        except AttributeError:
-            # file has no data in Scene8 - creates AttributeError.
+            data_check = self.contains_data()
+        except NoDataException:
+            print(
+                f"[error] -- Object: {index} in File: {self.ims_file_path} contains NO Data .. skipping"
+            )
             raise NoDataException
+
+        # get all the items that match object_name
+        values = self.data.get("Scene8").get("Content").keys()
+        storage = []
+        for item in values:
+            if len(re.findall(object_name, item)):
+                storage.append(item)
+
+        # check if each of the names have valid stats
+        valid_names = []
+        for index, name in enumerate(storage):
+            try:
+                stats_check = self.contains_valid_stats(name)
+            except NoValidObjectStatsException:
+                print(
+                    f"[error] -- Object: {index} in File: {self.ims_file_path} contains NO Valid Stats .. skipping"
+                )
+                valid_names.append(None)
+                continue
+
+            if stats_check:
+                valid_names.append(name)
+
+        # update storage to be valid names
+        storage = valid_names
 
         # catch any errors if the user requests a invalid item
         # OR return list with items.
-        if len(storage) == 0 and object_name == "Surface":
+        is_all_none = lambda lst: all(x is None for x in lst)
+
+        # surface
+        if (len(storage) == 0 and object_name == "Surface") or (
+            is_all_none(storage) and object_name == "Surface"
+        ):
             raise NoSurfaceException
-        elif len(storage) == 0 and object_name == "Points":
+
+        # spots/points
+        elif (len(storage) == 0 and object_name == "Points") or (
+            is_all_none(storage) and object_name == "Points"
+        ):
             raise NoPointsException
-        elif len(storage) == 0 and object_name == "Filaments":
+
+        # filaments
+        elif (
+            len(storage) == 0
+            and object_name == "Filaments"
+            or (is_all_none(storage) and object_name == "Filaments")
+        ):
             raise NoFilamentsException
+
+        # not supported types.
         elif object_name not in supported_types:
             raise NotImplementedError(
                 f"Parser does not support {object_name}. Supported Types {supported_types}"
@@ -358,6 +399,54 @@ class ImarisDataObject:
             return True
         else:
             return False
+
+    def contains_data(self) -> bool:
+        """
+        Some files look like they have data but its just dummy data imaris inserts.
+        This class checks for several items to ensure it meets all criteria before proceeding.
+
+        Args:
+            object_name (str): _description_
+
+        Returns:
+            bool: _description_
+        """
+        # check if it contains "Scene8"
+        check = self.data.get("Scene8")
+        if check is None:
+            raise NoDataException
+        else:
+            return True
+
+    def contains_valid_stats(self, object_name: str) -> Exception:
+        # check if stats are available
+        try:
+            stats = pd.DataFrame(
+                np.asarray(
+                    self.data.get("Scene8")
+                    .get("Content")
+                    .get(object_name)
+                    .get("StatisticsValue")
+                )
+            )
+        except AttributeError:
+            raise NoValidObjectStatsException
+
+        # if all the stats ids are -1 we dont have any specific item stats
+        if stats is not None:
+            unique_object_ids = stats["ID_Object"].unique()
+            if len(unique_object_ids) == 1:
+                if unique_object_ids.item() == -1:
+                    raise NoValidObjectStatsException
+                else:
+                    # for the off case theres 1 item and its a object stat.
+                    return True
+            elif len(unique_object_ids) == 0:
+                raise NoValidObjectStatsException
+            else:
+                return True
+        else:
+            raise NoValidObjectStatsException
 
 
 #################################################################################################
