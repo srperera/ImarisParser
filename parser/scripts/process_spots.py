@@ -114,14 +114,21 @@ def run_spot_track_object_parser_parallel(
     with ProcessPoolExecutor(max_workers=cpu_cores) as executor:
         # Submit tasks and track their futures
         actors = []
-        for task in tqdm(tasks):
+        for task in tqdm(
+            tasks,
+            total=len(tasks),
+            colour="Yellow",
+            ncols=80,
+            desc=f"Configuring Parser",
+        ):
             # Instructions: Modify Here If Duplicating For New Use Case
             # Use The Appropriate Class
             try:
                 actor = SpotTrackObjectParserDistributed(*task)
                 actors.append(actor)
             except Exception as exc:
-                print(f"[error] -- Task {task} generated an exception: {exc}")
+                print(f"[error] -- File {task[0]} generated an exception: {exc}")
+                continue
 
         # ensure we are not submitting too many jobs at a time
         # limits to at most 1 task per core.
@@ -148,6 +155,7 @@ def run_spot_track_object_parser_parallel(
                     print(
                         f"[error] -- Task for {task[0]} with spot ID {task[1]} generated an exception: {exc}"
                     )
+                    continue
 
     print("\n[info] -- All tasks complete.")
 
@@ -256,14 +264,21 @@ def run_spot_track_parser_parallel(
     with ProcessPoolExecutor(max_workers=cpu_cores) as executor:
         # Submit tasks and track their futures
         actors = []
-        for task in tqdm(tasks):
+        for task in tqdm(
+            tasks,
+            total=len(tasks),
+            colour="Yellow",
+            ncols=80,
+            desc=f"Configuring Parser",
+        ):
             # Instructions: Modify Here If Duplicating For New Use Case
             # Use The Appropriate Class
             try:
                 actor = SpotTrackParserDistributed(*task)
                 actors.append(actor)
             except Exception as exc:
-                print(f"[error] -- Task {task} generated an exception: {exc}")
+                print(f"[error] -- File {task[0]} generated an exception: {exc}")
+                continue
 
         # ensure we are not submitting too many jobs at a time
         # limits to at most 1 task per core.
@@ -290,6 +305,7 @@ def run_spot_track_parser_parallel(
                     print(
                         f"[error] -- Task for {task[0]} with spot ID {task[1]} generated an exception: {exc}"
                     )
+                    continue
 
     print("\n[info] -- All tasks complete.")
 

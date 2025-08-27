@@ -118,11 +118,20 @@ def run_filament_parser_parallel(
     with ProcessPoolExecutor(max_workers=cpu_cores) as executor:
         # Submit tasks and track their futures
         actors = []
-        for task in tasks:
+        for task in tqdm(
+            tasks,
+            total=len(tasks),
+            colour="Yellow",
+            ncols=80,
+            desc=f"Configuring Parser",
+        ):
             # Instructions: Modify Here If Duplicating For New Use Case
             # Use The Appropriate Class
-            actor = FilamentParserDistributed(*task)
-            actors.append(actor)
+            try:
+                actor = FilamentParserDistributed(*task)
+                actors.append(actor)
+            except Exception as exc:
+                print(f"[error] -- File {task[0]} generated an exception: {exc}")
 
         # ensure we are not submitting too many jobs at a time
         # limits to at most 1 task per core.
@@ -151,3 +160,7 @@ def run_filament_parser_parallel(
                     )
 
     print("\n[info] -- All tasks complete.")
+
+
+###############################################################################################
+###############################################################################################

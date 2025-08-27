@@ -3,13 +3,13 @@ import glob
 import numpy as np
 from tqdm import tqdm
 from typing import List, Tuple
-from imaris.exceptions import NoSurfaceException, NoDataException
-from concurrent.futures import ProcessPoolExecutor, as_completed
 from parsers.surface_parser import SurfaceParserDistributed
+from concurrent.futures import ProcessPoolExecutor, as_completed
+from imaris.exceptions import NoSurfaceException, NoDataException
 from parsers.surface_track_parser import SurfaceTrackParserDistributed
-from parsers.surface_track_object_parser import SurfaceTrackObjectParserDistributed
-from parsers.surface_time_step_parser import TimeStepSurfaceParserDistributed
 from utils.utils import get_valid_surfaces, get_valid_surfaces_with_tracks
+from parsers.surface_time_step_parser import TimeStepSurfaceParserDistributed
+from parsers.surface_track_object_parser import SurfaceTrackObjectParserDistributed
 
 
 ###############################################################################################
@@ -118,11 +118,21 @@ def run_surface_parser_parallel(
     with ProcessPoolExecutor(max_workers=cpu_cores) as executor:
         # Submit tasks and track their futures
         actors = []
-        for task in tasks:
+        for task in tqdm(
+            tasks,
+            total=len(tasks),
+            colour="Yellow",
+            ncols=80,
+            desc=f"Configuring Parser",
+        ):
             # Instructions: Modify Here If Duplicating For New Use Case
             # Use The Appropriate Class
-            actor = SurfaceParserDistributed(*task)
-            actors.append(actor)
+            try:
+                actor = SurfaceParserDistributed(*task)
+                actors.append(actor)
+            except Exception as exc:
+                print(f"[error] -- File {task[0]} generated an exception: {exc}")
+                continue
 
         # ensure we are not submitting too many jobs at a time
         # limits to at most 1 task per core.
@@ -149,6 +159,7 @@ def run_surface_parser_parallel(
                     print(
                         f"[error] -- Task for {task[0]} with surface ID {task[1]} generated an exception: {exc}"
                     )
+                    continue
 
     print("\n[info] -- All tasks complete.")
 
@@ -264,11 +275,21 @@ def run_surface_track_parser_parallel(
     with ProcessPoolExecutor(max_workers=cpu_cores) as executor:
         # Submit tasks and track their futures
         actors = []
-        for task in tasks:
+        for task in tqdm(
+            tasks,
+            total=len(tasks),
+            colour="Yellow",
+            ncols=80,
+            desc=f"Configuring Parser",
+        ):
             # Instructions: Modify Here If Duplicating For New Use Case
             # Use The Appropriate Class
-            actor = SurfaceTrackParserDistributed(*task)
-            actors.append(actor)
+            try:
+                actor = SurfaceTrackParserDistributed(*task)
+                actors.append(actor)
+            except Exception as exc:
+                print(f"[error] -- File {task[0]} generated an exception: {exc}")
+                continue
 
         # ensure we are not submitting too many jobs at a time
         # limits to at most 1 task per core.
@@ -295,6 +316,7 @@ def run_surface_track_parser_parallel(
                     print(
                         f"[error] -- Task for {task[0]} with surface ID {task[1]} generated an exception: {exc}"
                     )
+                    continue
 
     print("\n[info] -- All tasks complete.")
 
@@ -410,11 +432,21 @@ def run_surface_track_object_parser_parallel(
     with ProcessPoolExecutor(max_workers=cpu_cores) as executor:
         # Submit tasks and track their futures
         actors = []
-        for task in tasks:
+        for task in tqdm(
+            tasks,
+            total=len(tasks),
+            colour="Yellow",
+            ncols=80,
+            desc=f"Configuring Parser",
+        ):
             # Instructions: Modify Here If Duplicating For New Use Case
             # Use The Appropriate Class
-            actor = SurfaceTrackObjectParserDistributed(*task)
-            actors.append(actor)
+            try:
+                actor = SurfaceTrackObjectParserDistributed(*task)
+                actors.append(actor)
+            except Exception as exc:
+                print(f"[error] -- File {task[0]} generated an exception: {exc}")
+                continue
 
         # ensure we are not submitting too many jobs at a time
         # limits to at most 1 task per core.
@@ -441,6 +473,7 @@ def run_surface_track_object_parser_parallel(
                     print(
                         f"[error] -- Task for {task[0]} with surface ID {task[1]} generated an exception: {exc}"
                     )
+                    continue
 
     print("\n[info] -- All tasks complete.")
 
@@ -557,11 +590,21 @@ def run_surface_timestep_parser_parallel(
     with ProcessPoolExecutor(max_workers=cpu_cores) as executor:
         # Submit tasks and track their futures
         actors = []
-        for task in tasks:
+        for task in tqdm(
+            tasks,
+            total=len(tasks),
+            colour="Yellow",
+            ncols=80,
+            desc=f"Configuring Parser",
+        ):
             # Instructions: Modify Here If Duplicating For New Use Case
             # Use The Appropriate Class
-            actor = TimeStepSurfaceParserDistributed(*task)
-            actors.append(actor)
+            try:
+                actor = TimeStepSurfaceParserDistributed(*task)
+                actors.append(actor)
+            except Exception as exc:
+                print(f"[error] -- File {task[0]} generated an exception: {exc}")
+                continue
 
         # ensure we are not submitting too many jobs at a time
         # limits to at most 1 task per core.
@@ -588,6 +631,7 @@ def run_surface_timestep_parser_parallel(
                     print(
                         f"[error] -- Task for {task[0]} with surface ID {task[1]} generated an exception: {exc}"
                     )
+                    continue
 
     print("\n[info] -- All tasks complete.")
 
