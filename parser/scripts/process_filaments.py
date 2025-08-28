@@ -9,6 +9,8 @@ from imaris.exceptions import NoFilamentsException, NoDataException
 from parsers.filament_parser import FilamentParserDistributed
 from concurrent.futures import ProcessPoolExecutor, as_completed
 
+from .process_class import ProcessParsers
+
 
 ###############################################################################################
 ###############################################################################################
@@ -170,6 +172,26 @@ def run_filament_parser_parallel(
                     )
 
     print("\n[info] -- All tasks complete.")
+
+
+###############################################################################################
+###############################################################################################
+def run_filament_parser_parallel_v2(
+    data_dirs: List[str],
+    save_dirs: List[str],
+    cpu_cores: int = None,
+    filament_ids: Tuple[int] = None,
+) -> None:
+    process = ProcessParsers(
+        data_dirs=data_dirs,
+        save_dirs=save_dirs,
+        validator_fn=get_valid_filaments,
+        parser_class=FilamentParserDistributed,
+        parser_type="Filament",
+        cpu_cores=cpu_cores,
+        object_ids=filament_ids,
+    )
+    process.run()
 
 
 ###############################################################################################

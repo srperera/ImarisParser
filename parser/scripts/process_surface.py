@@ -11,6 +11,7 @@ from parsers.surface_track_parser import SurfaceTrackParserDistributed
 from utils.utils import get_valid_surfaces, get_valid_surfaces_with_tracks
 from parsers.surface_time_step_parser import TimeStepSurfaceParserDistributed
 from parsers.surface_track_object_parser import SurfaceTrackObjectParserDistributed
+from .process_class import ProcessParsers
 
 
 ###############################################################################################
@@ -667,3 +668,83 @@ def run_surface_timestep_parser_parallel(
 
 ###############################################################################################
 ###############################################################################################
+def run_surface_parser_parallel_v2(
+    data_dirs: List[str],
+    save_dirs: List[str],
+    cpu_cores: int = None,
+    surface_ids: Tuple[int] = None,
+) -> None:
+
+    process = ProcessParsers(
+        data_dirs=data_dirs,
+        save_dirs=save_dirs,
+        validator_fn=get_valid_surfaces,
+        parser_class=SurfaceParserDistributed,
+        parser_type="Surface",
+        cpu_cores=cpu_cores,
+        object_ids=surface_ids,
+    )
+    process.run()
+
+
+###############################################################################################
+###############################################################################################
+def run_surface_track_parser_parallel_v2(
+    data_dirs: List[str],
+    save_dirs: List[str],
+    cpu_cores: int = None,
+    surface_ids: Tuple[int] = None,
+) -> None:
+
+    process = ProcessParsers(
+        data_dirs=data_dirs,
+        save_dirs=save_dirs,
+        validator_fn=get_valid_surfaces_with_tracks,
+        parser_class=SurfaceTrackParserDistributed,
+        parser_type="Surface",
+        cpu_cores=cpu_cores,
+        object_ids=surface_ids,
+    )
+    process.run()
+
+
+###############################################################################################
+###############################################################################################
+def run_surface_track_object_parser_parallel_v2(
+    data_dirs: List[str],
+    save_dirs: List[str],
+    cpu_cores: int = None,
+    surface_ids: Tuple[int] = None,
+) -> None:
+
+    process = ProcessParsers(
+        data_dirs=data_dirs,
+        save_dirs=save_dirs,
+        validator_fn=get_valid_surfaces,
+        parser_class=SurfaceTrackObjectParserDistributed,
+        parser_type="Surface",
+        cpu_cores=cpu_cores,
+        object_ids=surface_ids,
+    )
+    process.run()
+
+
+###############################################################################################
+###############################################################################################
+def run_surface_timestep_parser_parallel_v2(
+    data_dirs: List[str],
+    save_dirs: List[str],
+    cpu_cores: int = None,
+    surface_ids: Tuple[int] = None,
+) -> None:
+
+    process = ProcessParsers(
+        data_dirs=data_dirs,
+        save_dirs=save_dirs,
+        validator_fn=get_valid_surfaces,
+        parser_class=TimeStepSurfaceParserDistributed,
+        parser_type="Surface",
+        cpu_cores=cpu_cores,
+        object_ids=surface_ids,
+    )
+    process.run()
