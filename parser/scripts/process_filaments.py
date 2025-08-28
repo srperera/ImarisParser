@@ -9,7 +9,7 @@ from imaris.exceptions import NoFilamentsException, NoDataException
 from parsers.filament_parser import FilamentParserDistributed
 from concurrent.futures import ProcessPoolExecutor, as_completed
 
-from .process_class import ProcessParsers
+from .processor import Processor
 
 
 ###############################################################################################
@@ -183,7 +183,7 @@ def run_filament_parser_parallel_v2(
     filament_ids: Tuple[int] = None,
     **kwargs,
 ) -> None:
-    process = ProcessParsers(
+    process = Processor(
         data_dirs=data_dirs,
         save_dirs=save_dirs,
         validator_fn=get_valid_filaments,

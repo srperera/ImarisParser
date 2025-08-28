@@ -11,7 +11,7 @@ from parsers.surface_track_parser import SurfaceTrackParserDistributed
 from utils.utils import get_valid_surfaces, get_valid_surfaces_with_tracks
 from parsers.surface_time_step_parser import TimeStepSurfaceParserDistributed
 from parsers.surface_track_object_parser import SurfaceTrackObjectParserDistributed
-from .process_class import ProcessParsers
+from .processor import Processor
 
 
 ###############################################################################################
@@ -676,7 +676,7 @@ def run_surface_parser_parallel_v2(
     **kwargs,
 ) -> None:
 
-    process = ProcessParsers(
+    process = Processor(
         data_dirs=data_dirs,
         save_dirs=save_dirs,
         validator_fn=get_valid_surfaces,
@@ -698,7 +698,7 @@ def run_surface_track_parser_parallel_v2(
     **kwargs,
 ) -> None:
 
-    process = ProcessParsers(
+    process = Processor(
         data_dirs=data_dirs,
         save_dirs=save_dirs,
         validator_fn=get_valid_surfaces_with_tracks,
@@ -720,7 +720,7 @@ def run_surface_track_object_parser_parallel_v2(
     **kwargs,
 ) -> None:
 
-    process = ProcessParsers(
+    process = Processor(
         data_dirs=data_dirs,
         save_dirs=save_dirs,
         validator_fn=get_valid_surfaces,
@@ -742,7 +742,7 @@ def run_surface_timestep_parser_parallel_v2(
     **kwargs,
 ) -> None:
 
-    process = ProcessParsers(
+    process = Processor(
         data_dirs=data_dirs,
         save_dirs=save_dirs,
         validator_fn=get_valid_surfaces,

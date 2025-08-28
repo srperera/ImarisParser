@@ -9,7 +9,7 @@ from concurrent.futures import ProcessPoolExecutor, as_completed
 from imaris.exceptions import NoPointsException, NoDataException
 
 
-class ProcessParsers:
+class Processor:
     """
     Handles parallel execution of the parsers.
     Ideally we want this parser to be extendable to any parser.

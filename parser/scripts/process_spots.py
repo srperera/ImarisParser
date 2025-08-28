@@ -11,7 +11,7 @@ from parsers.spot_track_parser import SpotTrackParserDistributed
 from utils.utils import get_valid_spot_objects, get_valid_spot_tracks
 from parsers.spot_track_object_parser import SpotTrackObjectParserDistributed
 
-from .process_class import ProcessParsers
+from .processor import Processor
 
 
 ###############################################################################################
@@ -341,7 +341,7 @@ def run_spot_track_object_parser_parallel_v2(
     spot_ids: Tuple[int] = None,
     **kwargs,
 ) -> None:
-    process = ProcessParsers(
+    process = Processor(
         data_dirs=data_dirs,
         save_dirs=save_dirs,
         validator_fn=get_valid_spot_objects,
@@ -362,7 +362,7 @@ def run_spot_track_parser_parallel_v2(
     spot_ids: Tuple[int] = None,
     **kwargs,
 ) -> None:
-    process = ProcessParsers(
+    process = Processor(
         data_dirs=data_dirs,
         save_dirs=save_dirs,
         validator_fn=get_valid_spot_tracks,
