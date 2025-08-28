@@ -4,6 +4,8 @@ import sys
 from datetime import datetime
 
 
+#################################################################################################
+#################################################################################################
 def create_run_logfile(name, logfile_name, base_path="."):
     """
     Create a run directory named as 'run_YYYYMMDD_HHMMSS' inside base_path,
@@ -30,6 +32,8 @@ def create_run_logfile(name, logfile_name, base_path="."):
     return log_file_path
 
 
+#################################################################################################
+#################################################################################################
 class Logger:
     """
     Simple logger that writes to both console and a log file.
@@ -70,3 +74,7 @@ class Logger:
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.close()
         sys.stdout = self.terminal
+
+
+#################################################################################################
+#################################################################################################
