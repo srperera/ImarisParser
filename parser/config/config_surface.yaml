@@ -25,7 +25,7 @@ extract_surface_track_objects: True
 
 # extract specific time step
 extract_specific_timestep: True
-time_index: 0
+time_index: 1
 
 # filter stats
 filter_stats: False

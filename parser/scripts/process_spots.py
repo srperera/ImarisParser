@@ -339,6 +339,7 @@ def run_spot_track_object_parser_parallel_v2(
     save_dirs: List[str],
     cpu_cores: int = None,
     spot_ids: Tuple[int] = None,
+    **kwargs,
 ) -> None:
     process = ProcessParsers(
         data_dirs=data_dirs,
@@ -349,7 +350,7 @@ def run_spot_track_object_parser_parallel_v2(
         cpu_cores=cpu_cores,
         object_ids=spot_ids,
     )
-    process.run()
+    process.run(**kwargs)
 
 
 ###############################################################################################
@@ -359,6 +360,7 @@ def run_spot_track_parser_parallel_v2(
     save_dirs: List[str],
     cpu_cores: int = None,
     spot_ids: Tuple[int] = None,
+    **kwargs,
 ) -> None:
     process = ProcessParsers(
         data_dirs=data_dirs,
@@ -369,7 +371,7 @@ def run_spot_track_parser_parallel_v2(
         cpu_cores=cpu_cores,
         object_ids=spot_ids,
     )
-    process.run()
+    process.run(**kwargs)
 
 
 ###############################################################################################

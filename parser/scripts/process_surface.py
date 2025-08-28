@@ -673,6 +673,7 @@ def run_surface_parser_parallel_v2(
     save_dirs: List[str],
     cpu_cores: int = None,
     surface_ids: Tuple[int] = None,
+    **kwargs,
 ) -> None:
 
     process = ProcessParsers(
@@ -684,7 +685,7 @@ def run_surface_parser_parallel_v2(
         cpu_cores=cpu_cores,
         object_ids=surface_ids,
     )
-    process.run()
+    process.run(**kwargs)
 
 
 ###############################################################################################
@@ -694,6 +695,7 @@ def run_surface_track_parser_parallel_v2(
     save_dirs: List[str],
     cpu_cores: int = None,
     surface_ids: Tuple[int] = None,
+    **kwargs,
 ) -> None:
 
     process = ProcessParsers(
@@ -705,7 +707,7 @@ def run_surface_track_parser_parallel_v2(
         cpu_cores=cpu_cores,
         object_ids=surface_ids,
     )
-    process.run()
+    process.run(**kwargs)
 
 
 ###############################################################################################
@@ -715,6 +717,7 @@ def run_surface_track_object_parser_parallel_v2(
     save_dirs: List[str],
     cpu_cores: int = None,
     surface_ids: Tuple[int] = None,
+    **kwargs,
 ) -> None:
 
     process = ProcessParsers(
@@ -726,7 +729,7 @@ def run_surface_track_object_parser_parallel_v2(
         cpu_cores=cpu_cores,
         object_ids=surface_ids,
     )
-    process.run()
+    process.run(**kwargs)
 
 
 ###############################################################################################
@@ -736,6 +739,7 @@ def run_surface_timestep_parser_parallel_v2(
     save_dirs: List[str],
     cpu_cores: int = None,
     surface_ids: Tuple[int] = None,
+    **kwargs,
 ) -> None:
 
     process = ProcessParsers(
@@ -747,4 +751,4 @@ def run_surface_timestep_parser_parallel_v2(
         cpu_cores=cpu_cores,
         object_ids=surface_ids,
     )
-    process.run()
+    process.run(**kwargs)

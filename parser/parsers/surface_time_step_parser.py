@@ -32,8 +32,8 @@ class TimeStepSurfaceParserDistributed(Parser):
         self,
         ims_file_path: str,
         surface_id: int = -1,
-        time_step: float = 1.0,
         save_dir: str = None,
+        time_step: float = 1.0,
     ) -> None:
         # TODO set up such that we can pass in a path of stats the user wants and we filter final csv accordingly
         self.ims_file_path = ims_file_path

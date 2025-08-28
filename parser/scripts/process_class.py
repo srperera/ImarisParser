@@ -38,7 +38,7 @@ class ProcessParsers:
         self.data_dirs = data_dirs
         self.save_dirs = save_dirs
         self.cpu_cores = cpu_cores
-        self.spot_ids = object_ids
+        self.object_ids = object_ids
         self.tasks = []
         self.run_summary = {}
 
@@ -74,9 +74,9 @@ class ProcessParsers:
                 try:
                     valid_objects = self.validator_fn(file_path)
 
-                    if self.spot_ids:
+                    if self.object_ids:
                         valid_objects = [
-                            idx for idx in valid_objects if (idx + 1) in self.spot_ids
+                            idx for idx in valid_objects if (idx + 1) in self.object_ids
                         ]
 
                     if valid_objects:
@@ -103,7 +103,7 @@ class ProcessParsers:
                         f"\t[error] -- Filename: {colored(f'\"{file_path}\"', 'red')} generated an unhandled exception: {colored(e, 'yellow')} . Skipping."
                     )
 
-    def _execute_in_parallel(self) -> None:
+    def _execute_in_parallel(self, **kwargs) -> None:
         """
         Execute prepared tasks in parallel using ProcessPoolExecutor.
 
@@ -129,7 +129,7 @@ class ProcessParsers:
                 desc="Configuring Parser",
             ):
                 try:
-                    actor = self.parser_class(*task)
+                    actor = self.parser_class(*task, **kwargs)
                     actors.append(actor)
                 except Exception as e:
                     print(
@@ -170,7 +170,7 @@ class ProcessParsers:
 
         print("\n[info] -- All tasks complete.")
 
-    def run(self):
+    def run(self, **kwargs):
         """
         Orchestrates scanning, validating, and parallel execution.
 
@@ -179,4 +179,4 @@ class ProcessParsers:
             parser_class (Type): Parser class to process tasks.
         """
         self._scan_and_collect_tasks()
-        self._execute_in_parallel()
+        self._execute_in_parallel(**kwargs)

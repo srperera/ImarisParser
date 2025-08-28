@@ -181,6 +181,7 @@ def run_filament_parser_parallel_v2(
     save_dirs: List[str],
     cpu_cores: int = None,
     filament_ids: Tuple[int] = None,
+    **kwargs,
 ) -> None:
     process = ProcessParsers(
         data_dirs=data_dirs,
@@ -191,7 +192,7 @@ def run_filament_parser_parallel_v2(
         cpu_cores=cpu_cores,
         object_ids=filament_ids,
     )
-    process.run()
+    process.run(**kwargs)
 
 
 ###############################################################################################
