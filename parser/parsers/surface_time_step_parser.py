@@ -33,13 +33,13 @@ class TimeStepSurfaceParserDistributed(Parser):
         ims_file_path: str,
         surface_id: int = -1,
         save_dir: str = None,
-        time_step: float = 1.0,
+        **kwargs,
     ) -> None:
         # TODO set up such that we can pass in a path of stats the user wants and we filter final csv accordingly
         self.ims_file_path = ims_file_path
         self.surface_id = surface_id
         self.save_dir = save_dir
-        self.time_step = time_step
+        self.time_step = kwargs["time_step"]
         self.ims = ImarisDataObject(self.ims_file_path)
         self._configure_instance(surface_id=surface_id)
 

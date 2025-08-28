@@ -24,6 +24,7 @@ class FilamentParserDistributed(Parser):
         ims_file_path: str,
         filament_id: int = -1,
         save_dir: str = None,
+        **kwargs,
     ) -> None:
         """
         Args:

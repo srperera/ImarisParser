@@ -23,6 +23,7 @@ def run_spot_track_object_parser_parallel(
         cpu_cores=cpu_cores,
         object_ids=spot_ids,
     )
+    kwargs["logfile_name"] = "spot_track_object"
     process.run(**kwargs)
 
 
@@ -44,6 +45,7 @@ def run_spot_track_parser_parallel(
         cpu_cores=cpu_cores,
         object_ids=spot_ids,
     )
+    kwargs["logfile_name"] = "spot_track"
     process.run(**kwargs)
 
 

@@ -22,6 +22,7 @@ def run_filament_parser_parallel(
         cpu_cores=cpu_cores,
         object_ids=filament_ids,
     )
+    kwargs["logfile_name"] = "filament_parser"
     process.run(**kwargs)
 
 

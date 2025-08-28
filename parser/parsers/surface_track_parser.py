@@ -26,6 +26,7 @@ class SurfaceTrackParserDistributed(Parser):
         ims_file_path: str,
         surface_id: int = -1,
         save_dir: str = None,
+        **kwargs,
     ) -> None:
         """
         Args:

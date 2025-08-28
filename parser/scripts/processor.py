@@ -1,4 +1,5 @@
 import os
+import sys
 import glob
 import numpy as np
 from tqdm import tqdm
@@ -7,8 +8,11 @@ from termcolor import colored
 from typing import List, Tuple, Callable, Any, Type
 from concurrent.futures import ProcessPoolExecutor, as_completed
 from imaris.exceptions import *
+from utils.logger import create_run_logfile, Logger
 
 
+#############################################################################################
+#############################################################################################
 class Processor:
     """
     Handles parallel execution of the parsers.
@@ -47,7 +51,17 @@ class Processor:
         self.parser_class = parser_class
         self.parser_type = parser_type
 
-    def _scan_and_collect_tasks(self) -> None:
+    def _create_logger(self, name: str = None) -> None:
+        # Setup logger (redirect print)
+        log_file = f"run.log"
+        self.log_file = create_run_logfile(
+            name, logfile_name=log_file, base_path=f"../run_logs/"
+        )
+        self._logger = Logger(self.log_file)
+        # Logger(log_file)  # Redirect all prints to log and console
+        sys.stdout = self._logger
+
+    def _scan_and_collect_tasks(self, name) -> None:
         """
         Scan data directories, validate files, and prepare task list.
 
@@ -55,6 +69,7 @@ class Processor:
 
         Returns: None
         """
+        print(f"\n[info] -- Starting {name.upper()}")
         for data_path, save_dir in zip(self.data_dirs, self.save_dirs):
             print(f"[info] -- Scanning folder: {data_path}")
             imaris_files = glob.glob(os.path.join(os.path.abspath(data_path), "*.ims"))
@@ -171,6 +186,13 @@ class Processor:
 
         print("\n[info] -- All tasks complete.")
 
+    def _clean_up(self) -> None:
+        # set stdout to its original instead of logger.
+        sys.stdout.close()  # important!
+        sys.stdout = sys.__stdout__
+        sys.stdout.flush()
+        sys.stdout = self._logger.terminal
+
     def run(self, **kwargs):
         """
         Orchestrates scanning, validating, and parallel execution.
@@ -179,5 +201,11 @@ class Processor:
             validator_fn (Callable): Function for validating objects in the file.
             parser_class (Type): Parser class to process tasks.
         """
-        self._scan_and_collect_tasks()
+        self._create_logger(kwargs["logfile_name"])
+        self._scan_and_collect_tasks(kwargs["logfile_name"])
         self._execute_in_parallel(**kwargs)
+        self._clean_up()
+
+
+#############################################################################################
+#############################################################################################

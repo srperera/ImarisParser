@@ -26,6 +26,7 @@ class SpotTrackParserDistributed(Parser):
         ims_file_path: str,
         spot_id: int = -1,
         save_dir: str = None,
+        **kwargs,
     ) -> None:
         """
         Args:

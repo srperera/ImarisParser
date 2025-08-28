@@ -26,6 +26,7 @@ def run_surface_parser_parallel(
         cpu_cores=cpu_cores,
         object_ids=surface_ids,
     )
+    kwargs["logfile_name"] = "surface"
     process.run(**kwargs)
 
 
@@ -48,6 +49,7 @@ def run_surface_track_parser_parallel(
         cpu_cores=cpu_cores,
         object_ids=surface_ids,
     )
+    kwargs["logfile_name"] = "surface_track"
     process.run(**kwargs)
 
 
@@ -70,6 +72,7 @@ def run_surface_track_object_parser_parallel(
         cpu_cores=cpu_cores,
         object_ids=surface_ids,
     )
+    kwargs["logfile_name"] = "surface_track_object"
     process.run(**kwargs)
 
 
@@ -92,4 +95,5 @@ def run_surface_timestep_parser_parallel(
         cpu_cores=cpu_cores,
         object_ids=surface_ids,
     )
+    kwargs["logfile_name"] = "surface_timestep"
     process.run(**kwargs)

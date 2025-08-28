@@ -25,6 +25,7 @@ class SpotTrackObjectParserDistributed(Parser):
         ims_file_path: str,
         spot_id: int = -1,
         save_dir: str = None,
+        **kwargs,
     ) -> None:
         # TODO set up such that we can pass in a path of stats the user wants and we filter final csv accordingly
         self.ims_file_path = ims_file_path
