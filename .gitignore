@@ -15,3 +15,4 @@ wheels/
 **/.vscode
 **/results/
 **/run_logs
+**/dev_notebooks/
