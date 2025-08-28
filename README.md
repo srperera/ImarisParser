@@ -92,7 +92,7 @@ ImarisParser/
 }
 ```
 
-## Used In Following Published Journals/Conference Papers
+## Used In The Following Published Journals/Conference Papers
 ```bibtex
 Note: Version 1 was used in this paper. Version 2 (this repo) is an improved version of version 1.
 
