@@ -372,7 +372,8 @@ class Parser(ABC):
         Raises:
             NotImplementedError: _description_
         """
-        return dataframe.filter(items=subset)
+        raise NotImplementedError
+        # return dataframe.filter(items=subset)
 
     @abstractmethod
     def _save_csv(self):

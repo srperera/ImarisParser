@@ -146,12 +146,17 @@ def get_valid_spot_objects(data_path: str) -> List[int]:
     points_names = ims_obj.get_object_names("Points")
     valid_points = []
     for idx, point in enumerate(points_names):
-        valid_point = ims_obj.contains_points(point)
+        if point is None:
+            valid_point = False
+        else:
+            valid_point = ims_obj.contains_points(point)
         if valid_point:
             valid_points.append(idx)
-            print(f"[info] -- points id: {idx} -- points: {point} -- Valid")
+            print(f"\t[info] -- points id: {idx} -- points: {point} -- Valid")
         else:
-            print(f"[info] -- points id: {idx} -- points: {point} -- Invalid Skipping")
+            print(
+                f"\t[info] -- points id: {idx} -- points: {point} -- Invalid Skipping"
+            )
 
     return valid_points
 
@@ -175,12 +180,17 @@ def get_valid_spot_tracks(data_path: str) -> List[int]:
     points_names = ims_obj.get_object_names("Points")
     valid_points = []
     for idx, point in enumerate(points_names):
-        valid_point = ims_obj.contains_tracks(point)
+        if point is None:
+            valid_point = False
+        else:
+            valid_point = ims_obj.contains_tracks(point)
         if valid_point:
             valid_points.append(idx)
-            print(f"[info] -- points id: {idx} -- points: {point} -- Valid")
+            print(f"\t[info] -- points id: {idx} -- points: {point} -- Valid")
         else:
-            print(f"[info] -- points id: {idx} -- points: {point} -- Invalid Skipping")
+            print(
+                f"\t[info] -- points id: {idx} -- points: {point} -- Invalid (No Tracks)"
+            )
 
     return valid_points
 
@@ -204,13 +214,16 @@ def get_valid_filaments(data_path: str) -> List[int]:
     filament_names = ims_obj.get_object_names("Filaments")
     valid_filaments = []
     for idx, filament in enumerate(filament_names):
-        valid_filament = ims_obj.contains_filaments(filament)
+        if filament is None:
+            valid_filament = False
+        else:
+            valid_filament = ims_obj.contains_filaments(filament)
         if valid_filament:
             valid_filaments.append(idx)
-            print(f"[info] -- filament id: {idx} -- filament: {filament} -- Valid")
+            print(f"\t[info] -- filament id: {idx} -- filament: {filament} -- Valid")
         else:
             print(
-                f"[info] -- filament id: {idx} -- filament: {filament} -- Invalid Skipping"
+                f"\t[info] -- filament id: {idx} -- filament: {filament} -- Invalid Skipping"
             )
 
     return valid_filaments
@@ -235,13 +248,16 @@ def get_valid_surfaces(data_path: str) -> List[int]:
     surface_names = ims_obj.get_object_names("Surface")
     valid_surfaces = []
     for idx, surface in enumerate(surface_names):
-        valid_surface = ims_obj.contains_surfaces(surface)
+        if surface is None:
+            valid_surface = False
+        else:
+            valid_surface = ims_obj.contains_surfaces(surface)
         if valid_surface:
             valid_surfaces.append(idx)
-            print(f"[info] -- surface id: {idx} -- surface: {surface} -- Valid")
+            print(f"\t[info] -- surface id: {idx} -- surface: {surface} -- Valid")
         else:
             print(
-                f"[info] -- surface id: {idx} -- surface: {surface} -- Invalid Skipping"
+                f"\t[info] -- surface id: {idx} -- surface: {surface} -- Invalid Skipping"
             )
 
     return valid_surfaces
@@ -269,16 +285,24 @@ def get_valid_surfaces_with_tracks(data_path: str) -> List[int]:
     surface_names = ims_obj.get_object_names("Surface")
     valid_surfaces = []
     for idx, surface in enumerate(surface_names):
-        valid_surface = ims_obj.contains_surfaces(surface)
-        valid_track = ims_obj.contains_tracks(surface)
+        if surface is None:
+            valid_surface = False
+            valid_track = False
+        else:
+            valid_surface = ims_obj.contains_surfaces(surface)
+            valid_track = ims_obj.contains_tracks(surface)
         if valid_surface and valid_track:
             valid_surfaces.append(idx)
             print(
-                f"[info] -- surface id: {idx} -- surface: {surface} -- Valid w/ Tracks"
+                f"\t[info] -- surface id: {idx} -- surface: {surface} -- Valid w/ Tracks"
             )
         else:
             print(
-                f"[info] -- surface id: {idx} -- surface: {surface} -- Invalid no Tracks .. Skipping"
+                f"\t[info] -- surface id: {idx} -- surface: {surface} -- Invalid no Tracks .. Skipping"
             )
 
     return valid_surfaces
+
+
+#########################################################################################
+#########################################################################################

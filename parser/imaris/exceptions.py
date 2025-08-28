@@ -84,3 +84,23 @@ class NoDataException(Exception):
 
 ###############################################################################################
 ###############################################################################################
+class NoValidObjectStatsException(Exception):
+    """raised when files dont have valid object ids and stats.
+
+    Args:
+        Exception (_type_): _description_
+    """
+
+    pass
+
+
+###############################################################################################
+###############################################################################################
+class NoSpotException(Exception):
+    """raised when files dont have valid spots.
+
+    Args:
+        Exception (_type_): _description_
+    """
+
+    pass

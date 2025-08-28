@@ -1,6 +1,6 @@
 # List of directories that contains .ims files
 data_dir: [
-  "/home/shehan/Documents/projects/nih/projects/ImarisParser/data/errors"
+  "/home/shehan/Documents/projects/nih/projects/ImarisParser/data/spots"
 ]
 
 # File Path: Optional If You want to Run a single .ims File

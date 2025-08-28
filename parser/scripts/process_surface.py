@@ -2,6 +2,7 @@ import os
 import glob
 import numpy as np
 from tqdm import tqdm
+from termcolor import colored
 from typing import List, Tuple
 from parsers.surface_parser import SurfaceParserDistributed
 from concurrent.futures import ProcessPoolExecutor, as_completed
@@ -10,6 +11,7 @@ from parsers.surface_track_parser import SurfaceTrackParserDistributed
 from utils.utils import get_valid_surfaces, get_valid_surfaces_with_tracks
 from parsers.surface_time_step_parser import TimeStepSurfaceParserDistributed
 from parsers.surface_track_object_parser import SurfaceTrackObjectParserDistributed
+from .processor import Processor
 
 
 ###############################################################################################
@@ -59,6 +61,7 @@ def run_surface_parser_parallel(
         # loop over each of the imaris files.
         for file_path in imaris_files:
             # get filename and destination path for saving.
+            print(f"[info] -- Filename: {colored(f'"{file_path}"', 'red')}")
             filename = os.path.splitext(os.path.basename(file_path))[0]
             save_path = os.path.join(save_dir, filename)
 
@@ -82,7 +85,7 @@ def run_surface_parser_parallel(
                 # if we have valid items in valid_objects, gather items for each task.
                 if len(valid_objects) > 0:
                     print(
-                        f"[info] -- Found {len(valid_objects)} surfaces in {filename}"
+                        f"\t[info] -- Found {colored(valid_objects, 'green')} surfaces in File Name: {colored(filename, 'green')}"
                     )
                     for idx in valid_objects:
                         # Instructions: Modify Here If Duplicating For New Use Case
@@ -90,26 +93,30 @@ def run_surface_parser_parallel(
                         tasks.append((file_path, idx, save_path))
                 else:
                     print(
-                        f"[info] -- No valid surfaces found in {filename} after filtering."
+                        f"\t[info] -- No valid surfaces found in File: {colored(filename, 'red')} after filtering."
                     )
 
             # Instructions: Modify Here If Duplicating For New Use Case
             # Use Appropriate Exception.
             except NoSurfaceException:
-                print(f"[info] -- File {filename} contains no surfaces. Skipping.")
+                print(
+                    f"\t[info] -- File: {colored(f'"{file_path}"', 'red')} contains no surfaces. Skipping."
+                )
                 continue
             except NoDataException:
-                print(f"[info] -- File {filename} contains no data. Skipping.")
+                print(
+                    f"\t[info] -- File: {colored(f'"{file_path}"', 'red')} contains no data. Skipping."
+                )
                 continue
             except Exception as e:
                 print(
-                    f"[error] -- Filename {file_path} generated an unhandled exception: {e}. Skipping."
+                    f"\t[error] -- Filename: {colored(f'"{file_path}"', 'red')} generated an unhandled exception: {colored(e, 'yellow')} . Skipping."
                 )
                 continue
 
     # 2. Execute tasks in parallel
     if not tasks:
-        print("[info] -- No tasks to run. Exiting.")
+        print("\n[info] -- No tasks to run. Exiting.")
         return
 
     print(f"\n[info] -- Found a total of {len(tasks)} tasks.")
@@ -130,8 +137,10 @@ def run_surface_parser_parallel(
             try:
                 actor = SurfaceParserDistributed(*task)
                 actors.append(actor)
-            except Exception as exc:
-                print(f"[error] -- File {task[0]} generated an exception: {exc}")
+            except Exception as e:
+                print(
+                    f"\t[error] -- File {colored(f'"{task[0]}"', 'red')} generated an exception: {colored(e, 'yellow')}"
+                )
                 continue
 
         # ensure we are not submitting too many jobs at a time
@@ -155,9 +164,9 @@ def run_surface_parser_parallel(
                 try:
                     # The result is typically None for this type of function, but we can check for exceptions
                     future.result()
-                except Exception as exc:
+                except Exception as e:
                     print(
-                        f"[error] -- Task for {task[0]} with surface ID {task[1]} generated an exception: {exc}"
+                        f"\t[error] -- File {colored(f'"{task[0]}"', 'red')} with surface ID {colored(task[1], 'red')} generated an exception: {colored(e, 'yellow')}"
                     )
                     continue
 
@@ -216,6 +225,7 @@ def run_surface_track_parser_parallel(
         # loop over each of the imaris files.
         for file_path in imaris_files:
             # get filename and destination path for saving.
+            print(f"[info] -- Filename: {colored(f'"{file_path}"', 'red')}")
             filename = os.path.splitext(os.path.basename(file_path))[0]
             save_path = os.path.join(save_dir, filename)
 
@@ -239,7 +249,7 @@ def run_surface_track_parser_parallel(
                 # if we have valid items in valid_surface_ids, gather items for each task.
                 if len(valid_objects) > 0:
                     print(
-                        f"[info] -- Found {len(valid_objects)} surfaces in {filename}"
+                        f"\t[info] -- Found {colored(valid_objects, 'green')} surfaces in File Name: {colored(filename, 'green')}"
                     )
                     for idx in valid_objects:
                         # Instructions: Modify Here If Duplicating For New Use Case
@@ -247,26 +257,30 @@ def run_surface_track_parser_parallel(
                         tasks.append((file_path, idx, save_path))
                 else:
                     print(
-                        f"[info] -- No valid surfaces found in {filename} after filtering."
+                        f"\t[info] -- No valid surfaces found in File: {colored(filename, 'red')} after filtering."
                     )
 
             # Instructions: Modify Here If Duplicating For New Use Case
             # Use Appropriate Exception.
             except NoSurfaceException:
-                print(f"[info] -- File {filename} contains no surfaces. Skipping.")
+                print(
+                    f"\t[info] -- File: {colored(f'"{file_path}"', 'red')} contains no surfaces. Skipping."
+                )
                 continue
             except NoDataException:
-                print(f"[info] -- File {filename} contains no data. Skipping.")
+                print(
+                    f"\t[info] -- File: {colored(f'"{file_path}"', 'red')} contains no data. Skipping."
+                )
                 continue
             except Exception as e:
                 print(
-                    f"[error] -- Filename {file_path} generated an unhandled exception: {e}. Skipping."
+                    f"\t[error] -- Filename: {colored(f'"{file_path}"', 'red')} generated an unhandled exception: {colored(e, 'yellow')} . Skipping."
                 )
                 continue
 
     # 2. Execute tasks in parallel
     if not tasks:
-        print("[info] -- No tasks to run. Exiting.")
+        print("\n[info] -- No tasks to run. Exiting.")
         return
 
     print(f"\n[info] -- Found a total of {len(tasks)} tasks.")
@@ -287,8 +301,10 @@ def run_surface_track_parser_parallel(
             try:
                 actor = SurfaceTrackParserDistributed(*task)
                 actors.append(actor)
-            except Exception as exc:
-                print(f"[error] -- File {task[0]} generated an exception: {exc}")
+            except Exception as e:
+                print(
+                    f"\t[error] -- File {colored(f'"{task[0]}"', 'red')} generated an exception: {colored(e, 'yellow')}"
+                )
                 continue
 
         # ensure we are not submitting too many jobs at a time
@@ -312,9 +328,9 @@ def run_surface_track_parser_parallel(
                 try:
                     # The result is typically None for this type of function, but we can check for exceptions
                     future.result()
-                except Exception as exc:
+                except Exception as e:
                     print(
-                        f"[error] -- Task for {task[0]} with surface ID {task[1]} generated an exception: {exc}"
+                        f"\t[error] -- File {colored(f'"{task[0]}"', 'red')} with surface ID {colored(task[1], 'red')} generated an exception: {colored(e, 'yellow')}"
                     )
                     continue
 
@@ -373,6 +389,7 @@ def run_surface_track_object_parser_parallel(
         # loop over each of the imaris files.
         for file_path in imaris_files:
             # get filename and destination path for saving.
+            print(f"[info] -- Filename: {colored(f'"{file_path}"', 'red')}")
             filename = os.path.splitext(os.path.basename(file_path))[0]
             save_path = os.path.join(save_dir, filename)
 
@@ -396,7 +413,7 @@ def run_surface_track_object_parser_parallel(
                 # if we have valid items in valid_surface_ids, gather items for each task.
                 if len(valid_objects) > 0:
                     print(
-                        f"[info] -- Found {len(valid_objects)} surfaces in {filename}"
+                        f"\t[info] -- Found {colored(valid_objects, 'green')} surfaces in File Name: {colored(filename, 'green')}"
                     )
                     for idx in valid_objects:
                         # Instructions: Modify Here If Duplicating For New Use Case
@@ -404,26 +421,30 @@ def run_surface_track_object_parser_parallel(
                         tasks.append((file_path, idx, save_path))
                 else:
                     print(
-                        f"[info] -- No valid surfaces found in {filename} after filtering."
+                        f"\t[info] -- No valid surfaces found in File: {colored(filename, 'red')} after filtering."
                     )
 
             # Instructions: Modify Here If Duplicating For New Use Case
             # Use Appropriate Exception.
             except NoSurfaceException:
-                print(f"[info] -- File {filename} contains no surfaces. Skipping.")
+                print(
+                    f"\t[info] -- File: {colored(f'"{file_path}"', 'red')} contains no surfaces. Skipping."
+                )
                 continue
             except NoDataException:
-                print(f"[info] -- File {filename} contains no data. Skipping.")
+                print(
+                    f"\t[info] -- File: {colored(f'"{file_path}"', 'red')} contains no data. Skipping."
+                )
                 continue
             except Exception as e:
                 print(
-                    f"[error] -- Filename {file_path} generated an unhandled exception: {e}. Skipping."
+                    f"\t[error] -- Filename: {colored(f'"{file_path}"', 'red')} generated an unhandled exception: {colored(e, 'yellow')} . Skipping."
                 )
                 continue
 
     # 2. Execute tasks in parallel
     if not tasks:
-        print("[info] -- No tasks to run. Exiting.")
+        print("\n[info] -- No tasks to run. Exiting.")
         return
 
     print(f"\n[info] -- Found a total of {len(tasks)} tasks.")
@@ -444,8 +465,10 @@ def run_surface_track_object_parser_parallel(
             try:
                 actor = SurfaceTrackObjectParserDistributed(*task)
                 actors.append(actor)
-            except Exception as exc:
-                print(f"[error] -- File {task[0]} generated an exception: {exc}")
+            except Exception as e:
+                print(
+                    f"\t[error] -- File {colored(f'"{task[0]}"', 'red')} generated an exception: {colored(e, 'yellow')}"
+                )
                 continue
 
         # ensure we are not submitting too many jobs at a time
@@ -469,9 +492,9 @@ def run_surface_track_object_parser_parallel(
                 try:
                     # The result is typically None for this type of function, but we can check for exceptions
                     future.result()
-                except Exception as exc:
+                except Exception as e:
                     print(
-                        f"[error] -- Task for {task[0]} with surface ID {task[1]} generated an exception: {exc}"
+                        f"\t[error] -- File {colored(f'"{task[0]}"', 'red')} with surface ID {colored(task[1], 'red')} generated an exception: {colored(e, 'yellow')}"
                     )
                     continue
 
@@ -531,6 +554,7 @@ def run_surface_timestep_parser_parallel(
         # loop over each of the imaris files.
         for file_path in imaris_files:
             # get filename and destination path for saving.
+            print(f"[info] -- Filename: {colored(f'"{file_path}"', 'red')}")
             filename = os.path.splitext(os.path.basename(file_path))[0]
             save_path = os.path.join(save_dir, filename)
 
@@ -554,7 +578,7 @@ def run_surface_timestep_parser_parallel(
                 # if we have valid items in valid_surface_ids, gather items for each task.
                 if len(valid_objects) > 0:
                     print(
-                        f"[info] -- Found {len(valid_objects)} surfaces in {filename}"
+                        f"\t[info] -- Found {colored(valid_objects, 'green')} surfaces in File Name: {colored(filename, 'green')}"
                     )
                     for idx in valid_objects:
                         # Instructions: Modify Here If Duplicating For New Use Case
@@ -562,26 +586,30 @@ def run_surface_timestep_parser_parallel(
                         tasks.append((file_path, idx, time_step, save_path))
                 else:
                     print(
-                        f"[info] -- No valid surfaces found in {filename} after filtering."
+                        f"\t[info] -- No valid surfaces found in File: {colored(filename, 'red')} after filtering."
                     )
 
             # Instructions: Modify Here If Duplicating For New Use Case
             # Use Appropriate Exception.
             except NoSurfaceException:
-                print(f"[info] -- File {filename} contains no surfaces. Skipping.")
+                print(
+                    f"\t[info] -- File: {colored(f'"{file_path}"', 'red')} contains no surfaces. Skipping."
+                )
                 continue
             except NoDataException:
-                print(f"[info] -- File {filename} contains no data. Skipping.")
+                print(
+                    f"\t[info] -- File: {colored(f'"{file_path}"', 'red')} contains no data. Skipping."
+                )
                 continue
             except Exception as e:
                 print(
-                    f"[error] -- Filename {file_path} generated an unhandled exception: {e}. Skipping."
+                    f"\t[error] -- Filename: {colored(f'"{file_path}"', 'red')} generated an unhandled exception: {colored(e, 'yellow')} . Skipping."
                 )
                 continue
 
     # 2. Execute tasks in parallel
     if not tasks:
-        print("[info] -- No tasks to run. Exiting.")
+        print("\n[info] -- No tasks to run. Exiting.")
         return
 
     print(f"\n[info] -- Found a total of {len(tasks)} tasks.")
@@ -602,8 +630,10 @@ def run_surface_timestep_parser_parallel(
             try:
                 actor = TimeStepSurfaceParserDistributed(*task)
                 actors.append(actor)
-            except Exception as exc:
-                print(f"[error] -- File {task[0]} generated an exception: {exc}")
+            except Exception as e:
+                print(
+                    f"\t[error] -- File {colored(f'"{task[0]}"', 'red')} generated an exception: {colored(e, 'yellow')}"
+                )
                 continue
 
         # ensure we are not submitting too many jobs at a time
@@ -627,9 +657,9 @@ def run_surface_timestep_parser_parallel(
                 try:
                     # The result is typically None for this type of function, but we can check for exceptions
                     future.result()
-                except Exception as exc:
+                except Exception as e:
                     print(
-                        f"[error] -- Task for {task[0]} with surface ID {task[1]} generated an exception: {exc}"
+                        f"\t[error] -- File {colored(f'"{task[0]}"', 'red')} with surface ID {colored(task[1], 'red')} generated an exception: {colored(e, 'yellow')}"
                     )
                     continue
 
@@ -638,3 +668,87 @@ def run_surface_timestep_parser_parallel(
 
 ###############################################################################################
 ###############################################################################################
+def run_surface_parser_parallel_v2(
+    data_dirs: List[str],
+    save_dirs: List[str],
+    cpu_cores: int = None,
+    surface_ids: Tuple[int] = None,
+    **kwargs,
+) -> None:
+
+    process = Processor(
+        data_dirs=data_dirs,
+        save_dirs=save_dirs,
+        validator_fn=get_valid_surfaces,
+        parser_class=SurfaceParserDistributed,
+        parser_type="Surface",
+        cpu_cores=cpu_cores,
+        object_ids=surface_ids,
+    )
+    process.run(**kwargs)
+
+
+###############################################################################################
+###############################################################################################
+def run_surface_track_parser_parallel_v2(
+    data_dirs: List[str],
+    save_dirs: List[str],
+    cpu_cores: int = None,
+    surface_ids: Tuple[int] = None,
+    **kwargs,
+) -> None:
+
+    process = Processor(
+        data_dirs=data_dirs,
+        save_dirs=save_dirs,
+        validator_fn=get_valid_surfaces_with_tracks,
+        parser_class=SurfaceTrackParserDistributed,
+        parser_type="Surface",
+        cpu_cores=cpu_cores,
+        object_ids=surface_ids,
+    )
+    process.run(**kwargs)
+
+
+###############################################################################################
+###############################################################################################
+def run_surface_track_object_parser_parallel_v2(
+    data_dirs: List[str],
+    save_dirs: List[str],
+    cpu_cores: int = None,
+    surface_ids: Tuple[int] = None,
+    **kwargs,
+) -> None:
+
+    process = Processor(
+        data_dirs=data_dirs,
+        save_dirs=save_dirs,
+        validator_fn=get_valid_surfaces,
+        parser_class=SurfaceTrackObjectParserDistributed,
+        parser_type="Surface",
+        cpu_cores=cpu_cores,
+        object_ids=surface_ids,
+    )
+    process.run(**kwargs)
+
+
+###############################################################################################
+###############################################################################################
+def run_surface_timestep_parser_parallel_v2(
+    data_dirs: List[str],
+    save_dirs: List[str],
+    cpu_cores: int = None,
+    surface_ids: Tuple[int] = None,
+    **kwargs,
+) -> None:
+
+    process = Processor(
+        data_dirs=data_dirs,
+        save_dirs=save_dirs,
+        validator_fn=get_valid_surfaces,
+        parser_class=TimeStepSurfaceParserDistributed,
+        parser_type="Surface",
+        cpu_cores=cpu_cores,
+        object_ids=surface_ids,
+    )
+    process.run(**kwargs)

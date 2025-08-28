@@ -2,11 +2,11 @@ import gc
 import os
 import time
 import pandas as pd
+from typing import Dict
 from copy import deepcopy
-from functools import partial
-from typing import Dict, List
 from .parser_base import Parser
 from imaris.imaris import ImarisDataObject
+from imaris.exceptions import NoSurfaceException
 
 
 ###########################################################################################
@@ -69,6 +69,8 @@ class SurfaceTrackObjectParserDistributed(Parser):
             self.surface_names = self.ims.get_object_names("Surface")
             if (surface_id >= 0) and (surface_id < len(self.surface_names)):
                 self.surface_names = [self.surface_names[surface_id]]
+                if self.surface_names[0] is None:
+                    raise NoSurfaceException
             elif surface_id >= len(self.surface_names):
                 raise ValueError(
                     f"surface_id {surface_id} exceeds number of surfaces available"
@@ -87,24 +89,28 @@ class SurfaceTrackObjectParserDistributed(Parser):
         self.stats_values = {
             surface_id: self.ims.get_stats_values(surface_name)
             for surface_id, surface_name in enumerate(self.surface_names)
+            if surface_name is not None
         }
 
         # get all the factor table info for every surface {surf_id: factor_df}
         self.factors = {
             surface_id: self.ims.get_object_factor(surface_name)
             for surface_id, surface_name in enumerate(self.surface_names)
+            if surface_name is not None
         }
 
         # gets all the track id information for every spot
         self.track_ids = {
             surface_id: self.ims.get_track_ids(surface_name)
             for surface_id, surface_name in enumerate(self.surface_names)
+            if surface_name is not None
         }
 
         # get all object information for every spot
         self.track_info = {
             surface_id: self.ims.get_track_info(surface_name)
             for surface_id, surface_name in enumerate(self.surface_names)
+            if surface_name is not None
         }
 
         self.object_ids = {}

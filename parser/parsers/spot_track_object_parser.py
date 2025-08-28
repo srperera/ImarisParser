@@ -2,11 +2,11 @@ import gc
 import os
 import time
 import pandas as pd
+from typing import Dict
 from copy import deepcopy
-from functools import partial
-from typing import Dict, List
 from .parser_base import Parser
 from imaris.imaris import ImarisDataObject
+from imaris.exceptions import NoSpotException
 
 
 ###########################################################################################
@@ -60,10 +60,12 @@ class SpotTrackObjectParserDistributed(Parser):
             # configure all available spots
             self.spot_names = self.ims.get_object_names("Points")
         else:
-            # grab the spot we care about
+            # grab the single spot we care about
             self.spot_names = self.ims.get_object_names("Points")
             if (spot_id >= 0) and (spot_id <= len(self.spot_names)):
                 self.spot_names = [self.spot_names[spot_id]]
+                if self.spot_names[0] is None:
+                    raise NoSpotException
             elif spot_id > len(self.spot_names):
                 raise ValueError(
                     f"spot_id {spot_id} exceeds number of spots available {len(self.spot_names)}"
@@ -76,30 +78,35 @@ class SpotTrackObjectParserDistributed(Parser):
         self.stats_names = {
             spot_id: self.ims.get_stats_names(spot_name)
             for spot_id, spot_name in enumerate(self.spot_names)
+            if spot_name is not None
         }
 
         # get all the stats values for every spot {surf_id: stats_values_df}
         self.stats_values = {
             spot_id: self.ims.get_stats_values(spot_name)
             for spot_id, spot_name in enumerate(self.spot_names)
+            if spot_name is not None
         }
 
         # get all the factor table info for every spot {surf_id: factor_df}
         self.factors = {
             spot_id: self.ims.get_object_factor(spot_name)
             for spot_id, spot_name in enumerate(self.spot_names)
+            if spot_name is not None
         }
 
         # gets all the track id information for every spot
         self.track_ids = {
             spot_id: self.ims.get_track_ids(spot_name)
             for spot_id, spot_name in enumerate(self.spot_names)
+            if spot_name is not None
         }
 
         # get all object information for every spot
         self.track_info = {
             spot_id: self.ims.get_track_info(spot_name)
             for spot_id, spot_name in enumerate(self.spot_names)
+            if spot_name is not None
         }
 
         # get all the track object id information for every spot {surf_id: object_ids_series}
@@ -107,6 +114,7 @@ class SpotTrackObjectParserDistributed(Parser):
         #     spot_id: self.ims.get_track_object_ids(spot_name)
         #     for spot_id, spot_name in enumerate(self.spot_names)
         # }
+        # TODO
         self.object_ids = {}
         for spot_id, spot_name in enumerate(self.spot_names):
             if self.ims.contains_tracks(spot_name):

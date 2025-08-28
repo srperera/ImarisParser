@@ -1,12 +1,11 @@
 import gc
 import os
-import numpy as np
 import pandas as pd
+from typing import Dict
 from copy import deepcopy
-from functools import partial
-from typing import Dict, List
 from .parser_base import Parser
 from imaris.imaris import ImarisDataObject
+from imaris.exceptions import NoSurfaceException
 
 # Notes:
 """
@@ -33,8 +32,8 @@ class TimeStepSurfaceParserDistributed(Parser):
         self,
         ims_file_path: str,
         surface_id: int = -1,
-        time_step: float = 1.0,
         save_dir: str = None,
+        time_step: float = 1.0,
     ) -> None:
         # TODO set up such that we can pass in a path of stats the user wants and we filter final csv accordingly
         self.ims_file_path = ims_file_path
@@ -63,17 +62,18 @@ class TimeStepSurfaceParserDistributed(Parser):
         """
         # TODO: check to ensure surfaces exist or raise error
         # extract all information and saves it as a instance var
-        if surface_id == -1:
-            # configure all available surfaces
+        if surface_id == -1:  # configure all available surfaces
             self.surface_names = self.ims.get_object_names("Surface")
         else:
             # grab the surface we care about
             self.surface_names = self.ims.get_object_names("Surface")
-            if (surface_id >= 0) and (surface_id <= len(self.surface_names)):
+            if (surface_id >= 0) and (surface_id < len(self.surface_names)):
                 self.surface_names = [self.surface_names[surface_id]]
-            elif surface_id > len(self.surface_names):
+                if self.surface_names[0] is None:
+                    raise NoSurfaceException
+            elif surface_id >= len(self.surface_names):
                 raise ValueError(
-                    f"surface_id {surface_id} exceeds number of surfaces available {len(self.surface_names)}"
+                    f"surface_id {surface_id} exceeds number of surfaces available"
                 )
             else:
                 # some currently unknown error
@@ -83,24 +83,28 @@ class TimeStepSurfaceParserDistributed(Parser):
         self.stats_names = {
             surface_id: self.ims.get_stats_names(surface_name)
             for surface_id, surface_name in enumerate(self.surface_names)
+            if surface_name is not None
         }
 
         # get all the stats values for every surface {surf_id: stats_values_df}
         self.stats_values = {
             surface_id: self.ims.get_stats_values(surface_name)
             for surface_id, surface_name in enumerate(self.surface_names)
+            if surface_name is not None
         }
 
         # get all the factor table info for every surface {surf_id: factor_df}
         self.factors = {
             surface_id: self.ims.get_object_factor(surface_name)
             for surface_id, surface_name in enumerate(self.surface_names)
+            if surface_name is not None
         }
 
         # get all the factor table info for every surface {surf_id: factor_df}
         self.object_ids = {
             surface_id: self.ims.get_object_ids(surface_name)
             for surface_id, surface_name in enumerate(self.surface_names)
+            if surface_name is not None
         }
 
     def _save_csv(
