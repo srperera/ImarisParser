@@ -6,7 +6,7 @@ from pathlib import Path
 from termcolor import colored
 from typing import List, Tuple, Callable, Any, Type
 from concurrent.futures import ProcessPoolExecutor, as_completed
-from imaris.exceptions import NoPointsException, NoDataException
+from imaris.exceptions import *
 
 
 class Processor:
@@ -72,6 +72,7 @@ class Processor:
                 os.makedirs(save_path, exist_ok=True)
 
                 try:
+                    # always check if the item is valid
                     valid_objects = self.validator_fn(file_path)
 
                     if self.object_ids:
@@ -90,7 +91,7 @@ class Processor:
                             f"\t[info] -- No valid {self.parser_type}s found in File: {colored(filename, 'red')} after filtering."
                         )
 
-                except NoPointsException:
+                except (NoPointsException, NoSurfaceException, NoFilamentsException):
                     print(
                         f"\t[info] -- File: {colored(f'\"{file_path}\"', 'red')} contains no {self.parser_type}s. Skipping."
                     )
