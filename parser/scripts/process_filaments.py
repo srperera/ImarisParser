@@ -2,6 +2,7 @@ import os
 import glob
 import numpy as np
 from tqdm import tqdm
+from termcolor import colored
 from typing import List, Tuple
 from utils.utils import get_valid_filaments
 from imaris.exceptions import NoFilamentsException, NoDataException
@@ -61,6 +62,7 @@ def run_filament_parser_parallel(
         # loop over each of the imaris files.
         for file_path in imaris_files:
             # get filename and destination path for saving.
+            print(f"[info] -- Filename: {colored(f'"{file_path}"', 'red')}")
             filename = os.path.splitext(os.path.basename(file_path))[0]
             save_path = os.path.join(save_dir, filename)
 
@@ -83,33 +85,39 @@ def run_filament_parser_parallel(
 
                 # if we have valid items in valid_filament_ids, gather items for each task.
                 if len(valid_objects) > 0:
-                    print(f"[info] -- Found {len(valid_objects)} spots in {filename}")
+                    print(
+                        f"\t[info] -- Found {colored(valid_objects, 'green')} filaments in File Name: {colored(filename, 'green')}"
+                    )
                     for idx in valid_objects:
                         # Instructions: Modify Here If Duplicating For New Use Case
                         # Depending on Class __init__ arguments can be different
                         tasks.append((file_path, idx, save_path))
                 else:
                     print(
-                        f"[info] -- No valid spots found in {filename} after filtering."
+                        f"\t[info] -- No valid filaments found in File: {colored(filename, 'red')} after filtering."
                     )
 
             # Instructions: Modify Here If Duplicating For New Use Case
             # Use Appropriate Exception.
             except NoFilamentsException:
-                print(f"[info] -- File {filename} contains no spots. Skipping.")
+                print(
+                    f"\t[info] -- File: {colored(f'"{file_path}"', 'red')} contains no filaments. Skipping."
+                )
                 continue
             except NoDataException:
-                print(f"[info] -- File {filename} contains no data. Skipping.")
+                print(
+                    f"\t[info] -- File: {colored(f'"{file_path}"', 'red')} contains no data. Skipping."
+                )
                 continue
             except Exception as e:
                 print(
-                    f"[error] -- Filename {file_path} generated an unhandled exception: {e}. Skipping."
+                    f"\t[error] -- Filename: {colored(f'"{file_path}"', 'red')} generated an unhandled exception: {colored(e, 'yellow')} . Skipping."
                 )
                 continue
 
     # 2. Execute tasks in parallel
     if not tasks:
-        print("[info] -- No tasks to run. Exiting.")
+        print("\n[info] -- No tasks to run. Exiting.")
         return
 
     print(f"\n[info] -- Found a total of {len(tasks)} tasks.")
@@ -130,8 +138,10 @@ def run_filament_parser_parallel(
             try:
                 actor = FilamentParserDistributed(*task)
                 actors.append(actor)
-            except Exception as exc:
-                print(f"[error] -- File {task[0]} generated an exception: {exc}")
+            except Exception as e:
+                print(
+                    f"\t[error] -- File {colored(f'"{task[0]}"', 'red')} generated an exception: {colored(e, 'yellow')}"
+                )
 
         # ensure we are not submitting too many jobs at a time
         # limits to at most 1 task per core.
@@ -149,14 +159,14 @@ def run_filament_parser_parallel(
                 total=len(split),
                 colour="MAGENTA",
                 ncols=80,
-                desc=f"Processing split: {idx}",
+                desc=f"Processing split {idx}",
             ):
                 try:
                     # The result is typically None for this type of function, but we can check for exceptions
                     future.result()
-                except Exception as exc:
+                except Exception as e:
                     print(
-                        f"[error] -- Task for {task[0]} with spot ID {task[1]} generated an exception: {exc}"
+                        f"\t[error] -- File {colored(f'"{task[0]}"', 'red')} with Filament ID {colored(task[1], 'red')} generated an exception: {colored(e, 'yellow')}"
                     )
 
     print("\n[info] -- All tasks complete.")

@@ -8,8 +8,10 @@ import os
 import h5py
 import numpy as np
 import pandas as pd
+from pathlib import Path
 from .exceptions import *
 from typing import List, Union
+from termcolor import colored
 
 
 #################################################################################################
@@ -55,9 +57,9 @@ class ImarisDataObject:
         try:
             data_check = self.contains_data()
         except NoDataException:
-            print(
-                f"[error] -- Object: {index} in File: {self.ims_file_path} contains NO Data .. skipping"
-            )
+            # print(
+            #     f"[error] -- Object: {colored(index, 'red')} in File: {colored(f'"{Path(self.ims_file_path)}"', 'yellow')} contains NO Data .. skipping"
+            # )
             raise NoDataException
 
         # get all the items that match object_name
@@ -73,9 +75,9 @@ class ImarisDataObject:
             try:
                 stats_check = self.contains_valid_stats(name)
             except NoValidObjectStatsException:
-                print(
-                    f"[error] -- Object: {index} in File: {self.ims_file_path} contains NO Valid Stats .. skipping"
-                )
+                # print(
+                #     f'[error] -- Object: {colored(index, 'red')} in File: {colored(f'"{Path(self.ims_file_path)}"', 'yellow')} contains NO Valid Stats .. skipping'
+                # )
                 valid_names.append(None)
                 continue
 
