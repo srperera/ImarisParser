@@ -5,10 +5,10 @@ import numpy as np
 from tqdm import tqdm
 from pathlib import Path
 from termcolor import colored
-from typing import List, Tuple, Callable, Any, Type
-from concurrent.futures import ProcessPoolExecutor, as_completed
 from imaris.exceptions import *
 from utils.logger import create_run_logfile, Logger
+from typing import List, Tuple, Callable, Any, Type
+from concurrent.futures import ProcessPoolExecutor, as_completed
 
 
 #############################################################################################
@@ -127,6 +127,7 @@ class Processor:
 
         Returns: None
         """
+        # check to see if we have any tasks if not exit
         if not self.tasks:
             print("\n[info] -- No tasks to run. Exiting.")
             return
@@ -134,35 +135,42 @@ class Processor:
         print(f"\n[info] -- Found a total of {len(self.tasks)} tasks.")
         print(f"[info] -- Starting parallel extraction...")
 
+        # Step 1: Create actors
+        actors = []
+        for task in tqdm(
+            self.tasks,
+            total=len(self.tasks),
+            colour="Yellow",
+            ncols=80,
+            desc="Configuring Parser",
+        ):
+            try:
+                actor = self.parser_class(*task, **kwargs)
+                actors.append(actor)
+            except Exception as e:
+                print(
+                    f"\t[error] -- File {colored(f'"{task[0]}"', 'red')} generated an exception: {colored(e, 'yellow')}"
+                )
+                continue
+
+        # 2. Generate the Actors
+        # check if we have actors if not exit
+        if len(actors) == 0:
+            print("\n[info] -- No tasks to run. Exiting.")
+            return
+
+        # ensure we are not submitting too many jobs at a time
+        # limits to at most 1 task per core.
+        num_actors = len(actors)
+        num_splits = (
+            int(np.round(num_actors / self.cpu_cores))
+            if num_actors > self.cpu_cores
+            else 1
+        )
+        splits = np.array_split(np.asarray(actors, dtype=object), num_splits)
+
+        # Step 3: Run tasks in parallel
         with ProcessPoolExecutor(max_workers=self.cpu_cores) as executor:
-            # TODO: We can move the actor creation and splits logic outside the with statement.
-            actors = []
-            for task in tqdm(
-                self.tasks,
-                total=len(self.tasks),
-                colour="Yellow",
-                ncols=80,
-                desc="Configuring Parser",
-            ):
-                try:
-                    actor = self.parser_class(*task, **kwargs)
-                    actors.append(actor)
-                except Exception as e:
-                    print(
-                        f"\t[error] -- File {colored(f'"{task[0]}"', 'red')} generated an exception: {colored(e, 'yellow')}"
-                    )
-                    continue
-
-            # ensure we are not submitting too many jobs at a time
-            # limits to at most 1 task per core.
-            num_actors = len(actors)
-            num_splits = (
-                int(np.round(num_actors / self.cpu_cores))
-                if num_actors > self.cpu_cores
-                else 1
-            )
-            splits = np.array_split(np.asarray(actors, dtype=object), num_splits)
-
             # Process
             for idx, split in enumerate(splits):
                 future_to_task = [
